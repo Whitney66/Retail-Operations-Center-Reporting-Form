@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>零售运营中心利润表 - 高保真原型</title>
+  <style>
+    :root {
+      --primary: #2367e8;
+      --primary-dark: #1f5fda;
+      --primary-light: #2a8cff;
+      --text: #333d4f;
+      --muted: #8a93a3;
+      --line: #edf0f5;
+      --header: #fbfbfc;
+      --danger: #ff5b5b;
+      --success: #21b573;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-width: 1280px;
+      min-height: 720px;
+      margin: 0;
+      background: #fff;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 720px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    }
+
+    .brand {
+      width: 180px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding-left: 18px;
+      gap: 10px;
+      flex-shrink: 0;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark span {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 4px 8px 4px 8px;
+      opacity: 0.95;
+    }
+
+    .brand-mark .m1 { left: 6px; top: 0; background: #43c462; transform: rotate(45deg); }
+    .brand-mark .m2 { right: 0; top: 6px; background: #33a0ff; transform: rotate(45deg); }
+    .brand-mark .m3 { left: 6px; bottom: 0; background: #ffb01e; transform: rotate(45deg); }
+    .brand-mark .m4 { left: 0; top: 6px; background: #5bd0d8; transform: rotate(45deg); }
+    .brand-mark .m5 { left: 8px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0.88; }
+
+    .top-nav {
+      height: 52px;
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .nav-item {
+      min-width: 90px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eef4ff;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      width: 92px;
+      color: var(--primary);
+      background: #fff;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+      margin-right: 6px;
+    }
+
+    .nav-item.dimmed {
+      opacity: 0.55;
+    }
+
+    .top-actions {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-right: 12px;
+      flex: 0 0 auto;
+    }
+
+    .search-box {
+      width: 164px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 5px;
+      padding: 0 10px;
+      color: #aab3c1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-box input {
+      width: 128px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #657083;
+    }
+
+    .search-icon {
+      width: 14px;
+      height: 14px;
+      margin-left: auto;
+      position: relative;
+    }
+
+    .search-icon::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #b6bfcd;
+      border-radius: 50%;
+      left: 0;
+      top: 0;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      background: #b6bfcd;
+      transform: rotate(45deg);
+      left: 8px;
+      top: 10px;
+      border-radius: 1px;
+    }
+
+    .top-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.95;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .icon-calendar::before {
+      content: "";
+      position: absolute;
+      inset: 2px 3px 2px 3px;
+      border: 2px solid #fff;
+      border-radius: 2px;
+    }
+
+    .icon-calendar::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      top: 7px;
+      height: 2px;
+      background: #fff;
+    }
+
+    .icon-bell::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 10px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-bottom: 0;
+      border-radius: 9px 9px 3px 3px;
+    }
+
+    .icon-bell::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      bottom: 1px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .icon-full::before,
+    .icon-full::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-color: #fff;
+      border-style: solid;
+    }
+
+    .icon-full::before {
+      left: 0;
+      top: 0;
+      border-width: 2px 0 0 2px;
+      box-shadow: 10px 0 0 -1px transparent;
+    }
+
+    .icon-full::after {
+      right: 0;
+      bottom: 0;
+      border-width: 0 2px 2px 0;
+    }
+
+    .cdf {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #f9a11d;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+    }
+
+    .secondary-strip {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-bottom: 1px solid #dcdfe6;
+      padding-left: 10px;
+    }
+
+    .report-pill {
+      min-width: 134px;
+      height: 24px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #1d86f2;
+      border-radius: 4px;
+      font-weight: 700;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .content {
+      padding: 16px 10px 0 10px;
+    }
+
+    .filters {
+      height: 39px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      height: 24px;
+      white-space: nowrap;
+    }
+
+    .filter-group label {
+      height: 24px;
+      line-height: 24px;
+      color: #111827;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .filter-text,
+    .filter-select {
+      height: 24px;
+      border: 1px solid #c8d0dc;
+      background: #fff;
+      color: #455064;
+      border-radius: 3px;
+      outline: none;
+      padding: 0 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .filter-text {
+      width: 148px;
+    }
+
+    .filter-select.type {
+      width: 126px;
+    }
+
+    .filter-select.store {
+      width: 248px;
+    }
+
+    .filter-text:focus,
+    .filter-select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .date-wrap {
+      position: relative;
+    }
+
+    .date-wrap::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      background:
+        linear-gradient(#aab3c1, #aab3c1) 0 3px / 10px 1px no-repeat,
+        linear-gradient(#aab3c1, #aab3c1) 2px 0 / 1px 3px no-repeat,
+        linear-gradient(#aab3c1, #aab3c1) 7px 0 / 1px 3px no-repeat;
+      border: 1px solid #aab3c1;
+      border-radius: 1px;
+      pointer-events: none;
+    }
+
+    .date-wrap input {
+      padding-right: 24px;
+    }
+
+    .spacer-wide {
+      width: 60px;
+    }
+
+    .query-actions {
+      display: flex;
+      gap: 10px;
+      margin-left: 0;
+    }
+
+    .btn {
+      height: 24px;
+      min-width: 54px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      padding: 0 16px;
+      line-height: 22px;
+      font-weight: 700;
+      background: #fff;
+      color: #3b4657;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-default {
+      border-color: #aeb7c6;
+      color: #283346;
+    }
+
+    .btn-default:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-danger-ghost {
+      border-color: #ff9b9b;
+      color: #e13c3c;
+      background: #fff;
+    }
+
+    .btn-danger-ghost:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: #fff7f7;
+    }
+
+    .actions-row {
+      height: 34px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding-top: 0;
+    }
+
+    .actions-row .btn {
+      height: 24px;
+      min-width: 67px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: hidden;
+      border-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #646f80;
+      font-size: 12px;
+    }
+
+    thead tr:first-child th {
+      height: 30px;
+      background: var(--header);
+      color: #263142;
+      font-weight: 700;
+      border-bottom: 0;
+      text-align: center;
+    }
+
+    thead tr:nth-child(2) th {
+      height: 30px;
+      background: #fff;
+      color: #263142;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 0 8px;
+      height: 31px;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      background: #fff;
+      transition: background 0.12s;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    tbody tr.selected {
+      background: #eef6ff;
+      box-shadow: inset 3px 0 0 var(--primary-light);
+    }
+
+    .col-index { width: 46px; }
+    .col-type { width: 70px; }
+    .col-date { width: 88px; }
+    .col-code { width: 78px; }
+    .col-name { width: 170px; }
+    .col-small { width: 86px; }
+    .col-operator { width: 82px; }
+    .col-time { width: 142px; }
+    .col-op { width: 78px; }
+
+    .td-name {
+      text-align: left;
+    }
+
+    .cell-input {
+      width: 68px;
+      height: 22px;
+      border: 1px solid #d6dce6;
+      border-radius: 2px;
+      outline: none;
+      text-align: left;
+      color: #4d596b;
+      padding: 0 6px;
+      background: #fff;
+    }
+
+    .cell-input::placeholder {
+      color: #a5afbd;
+    }
+
+    .cell-input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .operation {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .link-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: #1890ff;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .link-btn:hover {
+      color: #0a63cb;
+      text-decoration: underline;
+    }
+
+    .empty-row td {
+      height: 76px;
+      color: #9aa4b3;
+    }
+
+    .hidden-file {
+      display: none;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.32);
+    }
+
+    .modal-mask.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 722px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid #edf0f5;
+      color: #253044;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      border: 0;
+      background: transparent;
+      color: #8792a3;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .modal-close:hover {
+      color: #283346;
+    }
+
+    .modal-body {
+      padding: 18px 22px 4px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 26px;
+      row-gap: 12px;
+    }
+
+    .form-item {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+    }
+
+    .form-item label {
+      width: 112px;
+      color: #374151;
+      font-weight: 600;
+      text-align: right;
+      padding-right: 10px;
+      flex: 0 0 auto;
+    }
+
+    .form-item input,
+    .form-item select {
+      width: 196px;
+      height: 28px;
+      border: 1px solid #cfd6e2;
+      border-radius: 3px;
+      outline: none;
+      padding: 0 8px;
+      color: #455064;
+      background: #fff;
+    }
+
+    .form-item input:focus,
+    .form-item select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .form-item.full {
+      grid-column: 1 / span 2;
+    }
+
+    .form-item.full input {
+      width: 530px;
+    }
+
+    .required::before {
+      content: "*";
+      color: var(--danger);
+      margin-right: 3px;
+    }
+
+    .modal-footer {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 22px;
+      border-top: 1px solid #edf0f5;
+      background: #fbfcfe;
+    }
+
+    .confirm {
+      width: 380px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .confirm-body {
+      padding: 28px 30px 18px;
+      color: #2f3a4c;
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .confirm-title {
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .confirm-footer {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 18px;
+      background: #fbfcfe;
+      border-top: 1px solid #edf0f5;
+    }
+
+    .toast {
+      position: fixed;
+      top: 82px;
+      left: 50%;
+      z-index: 60;
+      min-width: 176px;
+      max-width: 420px;
+      display: none;
+      transform: translateX(-50%);
+      background: rgba(37, 48, 68, 0.95);
+      color: #fff;
+      border-radius: 4px;
+      padding: 9px 14px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .toast.show {
+      display: block;
+      animation: toast-in 0.18s ease-out;
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translate(-50%, -8px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><span class="m1"></span><span class="m2"></span><span class="m3"></span><span class="m4"></span><span class="m5"></span></span>
+        <span>大数据平台</span>
+      </div>
+      <nav class="top-nav" aria-label="主导航">
+        <a class="nav-item" href="javascript:void(0)">系统管理</a>
+        <a class="nav-item active" href="javascript:void(0)">经营看板</a>
+        <a class="nav-item" href="javascript:void(0)">销售分析</a>
+        <a class="nav-item" href="javascript:void(0)">进销存分析</a>
+        <a class="nav-item" href="javascript:void(0)">库存分析</a>
+        <a class="nav-item" href="javascript:void(0)">顾客分析</a>
+        <a class="nav-item" href="javascript:void(0)">采购分析</a>
+        <a class="nav-item dimmed" href="javascript:void(0)">提货分析</a>
+      </nav>
+      <div class="top-actions">
+        <div class="search-box">
+          <input type="text" placeholder="搜索" aria-label="搜索">
+          <span class="search-icon" aria-hidden="true"></span>
+        </div>
+        <span class="top-icon icon-calendar" aria-hidden="true"></span>
+        <span class="top-icon icon-bell" aria-hidden="true"></span>
+        <span class="top-icon icon-full" aria-hidden="true"></span>
+        <span class="cdf">cdf</span>
+      </div>
+    </header>
+
+    <div class="secondary-strip">
+      <div class="report-pill">零售运营中心利润表</div>
+    </div>
+
+    <main class="content">
+      <section class="filters" aria-label="查询条件">
+        <div class="filter-group">
+          <label for="startDate">开始时间：</label>
+          <span class="date-wrap"><input id="startDate" class="filter-text" type="text" placeholder="选择时间"></span>
+        </div>
+        <div class="filter-group">
+          <label for="endDate">至</label>
+          <span class="date-wrap"><input id="endDate" class="filter-text" type="text" placeholder="选择时间"></span>
+        </div>
+        <div class="filter-group">
+          <label for="dateType">日期类型：</label>
+          <select id="dateType" class="filter-select type">
+            <option value="">全部</option>
+            <option value="年">年</option>
+            <option value="月">月</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="storeFilter">门店：</label>
+          <select id="storeFilter" class="filter-select store">
+            <option value="">全部</option>
+            <option value="6826">6826 广州新免免税品有限公司</option>
+          </select>
+        </div>
+        <div class="spacer-wide"></div>
+        <div class="query-actions">
+          <button class="btn btn-primary" type="button" id="queryBtn">查询</button>
+          <button class="btn btn-default" type="button" id="resetBtn">重置</button>
+        </div>
+      </section>
+
+      <section class="actions-row" aria-label="表格操作">
+        <button class="btn btn-primary" type="button" id="importBtn">导入</button>
+        <button class="btn btn-primary" type="button" id="addBtn">+ 新增</button>
+        <button class="btn btn-danger-ghost" type="button" id="batchDeleteBtn">批量删除</button>
+        <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls,.csv">
+      </section>
+
+      <section class="table-wrap">
+        <table aria-label="零售运营中心利润表">
+          <thead>
+            <tr>
+              <th class="col-index" rowspan="2">序号</th>
+              <th class="col-type" rowspan="2">日期类型</th>
+              <th class="col-date" rowspan="2">日期</th>
+              <th class="col-code" rowspan="2">门店编码</th>
+              <th class="col-name" rowspan="2">门店名称</th>
+              <th colspan="2">营业收入（亿元）</th>
+              <th colspan="2">线下收入（亿元）</th>
+              <th colspan="2">客流人数（万人次）</th>
+              <th colspan="2">高客客流（万人次）</th>
+              <th class="col-operator" rowspan="2">操作人</th>
+              <th class="col-time" rowspan="2">操作时间</th>
+              <th class="col-op" rowspan="2">操作</th>
+            </tr>
+            <tr>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-mask" id="editMask" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="modalTitle">新增</span>
+        <button class="modal-close" type="button" id="closeModal" aria-label="关闭">×</button>
+      </div>
+      <form id="recordForm">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-item">
+              <label class="required" for="formDateType">日期类型</label>
+              <select id="formDateType" name="dateType" required>
+                <option value="年">年</option>
+                <option value="月">月</option>
+              </select>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formDate">日期</label>
+              <input id="formDate" name="date" type="text" placeholder="例如：2026-05" required>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formStoreCode">门店编码</label>
+              <input id="formStoreCode" name="storeCode" type="text" required>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formStoreName">门店名称</label>
+              <input id="formStoreName" name="storeName" type="text" required>
+            </div>
+            <div class="form-item">
+              <label for="formRevenueTarget">营业收入-目标数据</label>
+              <input id="formRevenueTarget" name="revenueTarget" type="text" placeholder="请输入内容">
+            </div>
+            <div class="form-item">
+              <label for="formRevenueActual">营业收入-实际完成</label>
+              <input id="formRevenueActual" name="revenueActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOfflineTarget">线下收入-目标数据</label>
+              <input id="formOfflineTarget" name="offlineTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOfflineActual">线下收入-实际完成</label>
+              <input id="formOfflineActual" name="offlineActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formFlowTarget">客流人数-目标数据</label>
+              <input id="formFlowTarget" name="flowTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formFlowActual">客流人数-实际完成</label>
+              <input id="formFlowActual" name="flowActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formVipFlowTarget">高客客流-目标数据</label>
+              <input id="formVipFlowTarget" name="vipFlowTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formVipFlowActual">高客客流-实际完成</label>
+              <input id="formVipFlowActual" name="vipFlowActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOperator">操作人</label>
+              <input id="formOperator" name="operator" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOperateTime">操作时间</label>
+              <input id="formOperateTime" name="operateTime" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" type="button" id="cancelModal">取消</button>
+          <button class="btn btn-primary" type="submit">确定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="confirmMask" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="confirm">
+      <div class="confirm-body">
+        <div class="confirm-title" id="confirmTitle">确认删除</div>
+        <div id="confirmText">删除后不可恢复，确认继续？</div>
+      </div>
+      <div class="confirm-footer">
+        <button class="btn btn-default" type="button" id="confirmCancel">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmOk">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = 'retail_profit_statement_rows_v1';
+
+    const seedRows = [
+      {
+        id: 'row-1',
+        dateType: '年',
+        date: '2026',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      },
+      {
+        id: 'row-2',
+        dateType: '月',
+        date: '2026-05',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      },
+      {
+        id: 'row-3',
+        dateType: '月',
+        date: '2026-05',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      }
+    ];
+
+    let rows = loadRows();
+    let visibleRows = [...rows];
+    let selectedIds = new Set();
+    let editingId = null;
+    let confirmAction = null;
+
+    const tableBody = document.getElementById('tableBody');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    const dateType = document.getElementById('dateType');
+    const storeFilter = document.getElementById('storeFilter');
+    const editMask = document.getElementById('editMask');
+    const confirmMask = document.getElementById('confirmMask');
+    const recordForm = document.getElementById('recordForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const toast = document.getElementById('toast');
+
+    renderTable();
+
+    document.getElementById('queryBtn').addEventListener('click', handleQuery);
+    document.getElementById('resetBtn').addEventListener('click', handleReset);
+    document.getElementById('addBtn').addEventListener('click', () => openModal());
+    document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
+    document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+    document.getElementById('importFile').addEventListener('change', handleImport);
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelModal').addEventListener('click', closeModal);
+    document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
+    document.getElementById('confirmOk').addEventListener('click', () => {
+      if (typeof confirmAction === 'function') confirmAction();
+      closeConfirm();
+    });
+
+    editMask.addEventListener('click', (event) => {
+      if (event.target === editMask) closeModal();
+    });
+
+    confirmMask.addEventListener('click', (event) => {
+      if (event.target === confirmMask) closeConfirm();
+    });
+
+    recordForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(recordForm);
+      const data = Object.fromEntries(formData.entries());
+      const record = normalizeRecord(data);
+
+      if (editingId) {
+        rows = rows.map((item) => item.id === editingId ? { ...record, id: editingId } : item);
+        showToast('编辑成功');
+      } else {
+        rows.unshift({ ...record, id: createId() });
+        showToast('新增成功');
+      }
+
+      saveRows();
+      selectedIds.clear();
+      applyCurrentFilters();
+      closeModal();
+    });
+
+    tableBody.addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-action="edit"]');
+      const deleteButton = event.target.closest('[data-action="delete"]');
+      const input = event.target.closest('.cell-input');
+
+      if (editButton) {
+        const id = editButton.dataset.id;
+        openModal(rows.find((item) => item.id === id));
+        return;
+      }
+
+      if (deleteButton) {
+        const id = deleteButton.dataset.id;
+        openConfirm('确认删除', '删除后不可恢复，确认继续？', () => {
+          rows = rows.filter((item) => item.id !== id);
+          selectedIds.delete(id);
+          saveRows();
+          applyCurrentFilters();
+          showToast('删除成功');
+        });
+        return;
+      }
+
+      if (input) return;
+
+      const tr = event.target.closest('tr[data-id]');
+      if (!tr) return;
+      const id = tr.dataset.id;
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+      } else {
+        selectedIds.add(id);
+      }
+      renderTable();
+    });
+
+    tableBody.addEventListener('dblclick', (event) => {
+      if (event.target.closest('button') || event.target.closest('input')) return;
+      const tr = event.target.closest('tr[data-id]');
+      if (!tr) return;
+      openModal(rows.find((item) => item.id === tr.dataset.id));
+    });
+
+    tableBody.addEventListener('input', (event) => {
+      const input = event.target.closest('.cell-input');
+      if (!input) return;
+      const id = input.dataset.id;
+      rows = rows.map((item) => item.id === id ? { ...item, revenueTarget: input.value } : item);
+      visibleRows = visibleRows.map((item) => item.id === id ? { ...item, revenueTarget: input.value } : item);
+      saveRows();
+    });
+
+    function loadRows() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : seedRows.map((item) => ({ ...item }));
+      } catch (error) {
+        return seedRows.map((item) => ({ ...item }));
+      }
+    }
+
+    function saveRows() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    }
+
+    function renderTable() {
+      if (!visibleRows.length) {
+        tableBody.innerHTML = '<tr class="empty-row"><td colspan="16">暂无数据</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = visibleRows.map((row, index) => {
+        const selected = selectedIds.has(row.id) ? ' selected' : '';
+        const revenueTargetCell = row.revenueTarget
+          ? escapeHtml(row.revenueTarget)
+          : `<input class="cell-input" data-id="${row.id}" type="text" placeholder="请输入内容" aria-label="营业收入目标数据">`;
+
+        return `
+          <tr class="${selected}" data-id="${row.id}" title="单击选择，双击编辑">
+            <td>${index + 1}</td>
+            <td>${escapeHtml(row.dateType)}</td>
+            <td>${escapeHtml(row.date)}</td>
+            <td>${escapeHtml(row.storeCode)}</td>
+            <td class="td-name">${escapeHtml(row.storeName)}</td>
+            <td>${revenueTargetCell}</td>
+            <td>${escapeHtml(row.revenueActual)}</td>
+            <td>${escapeHtml(row.offlineTarget)}</td>
+            <td>${escapeHtml(row.offlineActual)}</td>
+            <td>${escapeHtml(row.flowTarget)}</td>
+            <td>${escapeHtml(row.flowActual)}</td>
+            <td>${escapeHtml(row.vipFlowTarget)}</td>
+            <td>${escapeHtml(row.vipFlowActual)}</td>
+            <td>${escapeHtml(row.operator)}</td>
+            <td>${escapeHtml(row.operateTime)}</td>
+            <td>
+              <span class="operation">
+                <button class="link-btn" type="button" data-action="edit" data-id="${row.id}">编辑</button>
+                <button class="link-btn" type="button" data-action="delete" data-id="${row.id}">删除</button>
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function handleQuery() {
+      selectedIds.clear();
+      applyCurrentFilters();
+      showToast(`查询完成，共 ${visibleRows.length} 条数据`);
+    }
+
+    function handleReset() {
+      startDate.value = '';
+      endDate.value = '';
+      dateType.value = '';
+      storeFilter.value = '';
+      selectedIds.clear();
+      visibleRows = [...rows];
+      renderTable();
+      showToast('已重置');
+    }
+
+    function applyCurrentFilters() {
+      const start = startDate.value.trim();
+      const end = endDate.value.trim();
+      const type = dateType.value;
+      const store = storeFilter.value;
+
+      visibleRows = rows.filter((row) => {
+        const typeMatch = !type || row.dateType === type;
+        const storeMatch = !store || row.storeCode === store;
+        const startMatch = !start || compareDateText(row.date, start) >= 0;
+        const endMatch = !end || compareDateText(row.date, end) <= 0;
+        return typeMatch && storeMatch && startMatch && endMatch;
+      });
+
+      renderTable();
+    }
+
+    function handleBatchDelete() {
+      if (!selectedIds.size) {
+        showToast('请先单击表格行选择要删除的数据');
+        return;
+      }
+
+      openConfirm('确认批量删除', `已选择 ${selectedIds.size} 条数据，删除后不可恢复，确认继续？`, () => {
+        rows = rows.filter((item) => !selectedIds.has(item.id));
+        selectedIds.clear();
+        saveRows();
+        applyCurrentFilters();
+        showToast('批量删除成功');
+      });
+    }
+
+    function handleImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      rows.unshift({
+        id: createId(),
+        dateType: '月',
+        date: '2026-05',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: nowText()
+      });
+
+      event.target.value = '';
+      saveRows();
+      applyCurrentFilters();
+      showToast(`导入成功：${file.name}`);
+    }
+
+    function openModal(record) {
+      editingId = record ? record.id : null;
+      modalTitle.textContent = record ? '编辑' : '新增';
+      recordForm.reset();
+
+      const values = record || {
+        dateType: '月',
+        date: '2026-05',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: nowText()
+      };
+
+      for (const [key, value] of Object.entries(values)) {
+        if (recordForm.elements[key]) {
+          recordForm.elements[key].value = value || '';
+        }
+      }
+
+      editMask.classList.add('show');
+      setTimeout(() => document.getElementById('formDateType').focus(), 0);
+    }
+
+    function closeModal() {
+      editMask.classList.remove('show');
+      editingId = null;
+    }
+
+    function openConfirm(title, text, action) {
+      document.getElementById('confirmTitle').textContent = title;
+      document.getElementById('confirmText').textContent = text;
+      confirmAction = action;
+      confirmMask.classList.add('show');
+    }
+
+    function closeConfirm() {
+      confirmMask.classList.remove('show');
+      confirmAction = null;
+    }
+
+    function normalizeRecord(data) {
+      return {
+        dateType: data.dateType || '月',
+        date: data.date || '2026-05',
+        storeCode: data.storeCode || '6826',
+        storeName: data.storeName || '广州新免免税品有限公司',
+        revenueTarget: data.revenueTarget || '',
+        revenueActual: data.revenueActual || 'xxxx.xx',
+        offlineTarget: data.offlineTarget || '9865.11',
+        offlineActual: data.offlineActual || 'xxxx.xx',
+        flowTarget: data.flowTarget || 'xxxx.xx',
+        flowActual: data.flowActual || 'xxxx.xx',
+        vipFlowTarget: data.vipFlowTarget || 'xxxx.xx',
+        vipFlowActual: data.vipFlowActual || 'xxxx.xx',
+        operator: data.operator || 'wangkeke',
+        operateTime: data.operateTime || nowText()
+      };
+    }
+
+    function createId() {
+      return `row-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function nowText() {
+      const now = new Date();
+      const pad = (num) => String(num).padStart(2, '0');
+      return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+
+    function compareDateText(left, right) {
+      const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(8, '0');
+      return normalize(left).localeCompare(normalize(right));
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+  </script>
+</body>
+</html>
