@@ -352,6 +352,76 @@
       width: 248px;
     }
 
+    .multi-select {
+      position: relative;
+      width: 248px;
+      height: 24px;
+    }
+
+    .multi-select-trigger {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #c8d0dc;
+      border-radius: 3px;
+      background: #fff;
+      color: #455064;
+      padding: 0 7px 0 8px;
+      text-align: left;
+    }
+
+    .multi-select-trigger::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #8a93a3;
+      margin-left: 8px;
+    }
+
+    .multi-select.open .multi-select-trigger {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .multi-select-menu {
+      position: absolute;
+      top: 27px;
+      left: 0;
+      z-index: 30;
+      display: none;
+      width: 100%;
+      padding: 6px 0;
+      border: 1px solid #cfd6e2;
+      border-radius: 3px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+    }
+
+    .multi-select.open .multi-select-menu {
+      display: block;
+    }
+
+    .multi-option {
+      display: flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      color: #455064;
+      cursor: pointer;
+    }
+
+    .multi-option:hover {
+      background: #f5f8ff;
+    }
+
+    .multi-option input {
+      margin: 0 6px 0 0;
+    }
+
     .filter-text:focus,
     .filter-select:focus {
       border-color: var(--primary-light);
@@ -852,14 +922,6 @@
     <main class="content">
       <section class="filters" aria-label="查询条件">
         <div class="filter-group">
-          <label for="startDate">开始时间：</label>
-          <span class="date-wrap"><input id="startDate" class="filter-text" type="text" placeholder="选择时间"></span>
-        </div>
-        <div class="filter-group">
-          <label for="endDate">至</label>
-          <span class="date-wrap"><input id="endDate" class="filter-text" type="text" placeholder="选择时间"></span>
-        </div>
-        <div class="filter-group">
           <label for="dateType">日期类型：</label>
           <select id="dateType" class="filter-select type">
             <option value="">全部</option>
@@ -868,11 +930,21 @@
           </select>
         </div>
         <div class="filter-group">
-          <label for="storeFilter">门店：</label>
-          <select id="storeFilter" class="filter-select store">
-            <option value="">全部</option>
-            <option value="6826">6826 广州新免免税品有限公司</option>
-          </select>
+          <label for="startDate">日期：</label>
+          <span class="date-wrap"><input id="startDate" class="filter-text" type="text" placeholder="选择时间"></span>
+        </div>
+        <div class="filter-group">
+          <label for="endDate">至</label>
+          <span class="date-wrap"><input id="endDate" class="filter-text" type="text" placeholder="选择时间"></span>
+        </div>
+        <div class="filter-group">
+          <label for="storeTrigger">门店：</label>
+          <div class="multi-select" id="storeFilter">
+            <button class="multi-select-trigger" type="button" id="storeTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
+            <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+              <label class="multi-option"><input type="checkbox" value="6826" checked>6826 广州新免免税品有限公司</label>
+            </div>
+          </div>
         </div>
         <div class="spacer-wide"></div>
         <div class="query-actions">
@@ -899,7 +971,7 @@
               <th colspan="2">营业收入（亿元）</th>
               <th colspan="2">线下收入（亿元）</th>
               <th colspan="2">客流人数（万人次）</th>
-              <th colspan="2">高客客流（万人次）</th>
+              <th colspan="2">离岛客流（万人次）</th>
               <th class="col-operator" rowspan="2">操作人</th>
               <th class="col-time" rowspan="2">操作时间</th>
               <th class="col-op" rowspan="2">操作</th>
@@ -975,20 +1047,12 @@
               <input id="formFlowActual" name="flowActual" type="text">
             </div>
             <div class="form-item">
-              <label for="formVipFlowTarget">高客客流-目标数据</label>
+              <label for="formVipFlowTarget">离岛客流-目标数据</label>
               <input id="formVipFlowTarget" name="vipFlowTarget" type="text">
             </div>
             <div class="form-item">
-              <label for="formVipFlowActual">高客客流-实际完成</label>
+              <label for="formVipFlowActual">离岛客流-实际完成</label>
               <input id="formVipFlowActual" name="vipFlowActual" type="text">
-            </div>
-            <div class="form-item">
-              <label for="formOperator">操作人</label>
-              <input id="formOperator" name="operator" type="text">
-            </div>
-            <div class="form-item">
-              <label for="formOperateTime">操作时间</label>
-              <input id="formOperateTime" name="operateTime" type="text">
             </div>
           </div>
         </div>
@@ -1121,6 +1185,7 @@
     const endDate = document.getElementById('endDate');
     const dateType = document.getElementById('dateType');
     const storeFilter = document.getElementById('storeFilter');
+    const storeTrigger = document.getElementById('storeTrigger');
     const editMask = document.getElementById('editMask');
     const importMask = document.getElementById('importMask');
     const confirmMask = document.getElementById('confirmMask');
@@ -1130,10 +1195,16 @@
     const importFileName = document.getElementById('importFileName');
     const toast = document.getElementById('toast');
 
+    updateDatePlaceholders();
+    updateStoreTriggerText();
     renderTable();
 
     document.getElementById('queryBtn').addEventListener('click', handleQuery);
     document.getElementById('resetBtn').addEventListener('click', handleReset);
+    dateType.addEventListener('change', handleDateTypeChange);
+    storeTrigger.addEventListener('click', toggleStoreFilter);
+    storeFilter.addEventListener('change', updateStoreTriggerText);
+    document.addEventListener('click', closeStoreFilterOnOutsideClick);
     document.getElementById('addBtn').addEventListener('click', () => openModal());
     document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
     document.getElementById('importBtn').addEventListener('click', openImportModal);
@@ -1342,10 +1413,14 @@
     }
 
     function handleReset() {
+      dateType.value = '';
       startDate.value = '';
       endDate.value = '';
-      dateType.value = '';
-      storeFilter.value = '';
+      storeFilter.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+      updateDatePlaceholders();
+      updateStoreTriggerText();
       selectedIds.clear();
       inlineEditingId = null;
       visibleRows = [...rows];
@@ -1357,17 +1432,63 @@
       const start = startDate.value.trim();
       const end = endDate.value.trim();
       const type = dateType.value;
-      const store = storeFilter.value;
+      const selectedStores = getSelectedStores();
 
       visibleRows = rows.filter((row) => {
         const typeMatch = !type || row.dateType === type;
-        const storeMatch = !store || row.storeCode === store;
-        const startMatch = !start || compareDateText(row.date, start) >= 0;
-        const endMatch = !end || compareDateText(row.date, end) <= 0;
+        const storeMatch = !selectedStores.length || selectedStores.includes(row.storeCode);
+        const startMatch = !start || compareDateByType(row.date, start, type) >= 0;
+        const endMatch = !end || compareDateByType(row.date, end, type) <= 0;
         return typeMatch && storeMatch && startMatch && endMatch;
       });
 
       renderTable();
+    }
+
+    function handleDateTypeChange() {
+      startDate.value = '';
+      endDate.value = '';
+      updateDatePlaceholders();
+    }
+
+    function updateDatePlaceholders() {
+      const placeholder = dateType.value === '年'
+        ? '例如：2026'
+        : dateType.value === '月'
+          ? '例如：2026-05'
+          : '选择时间';
+      startDate.placeholder = placeholder;
+      endDate.placeholder = placeholder;
+    }
+
+    function toggleStoreFilter(event) {
+      event.stopPropagation();
+      const isOpen = storeFilter.classList.toggle('open');
+      storeTrigger.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    function closeStoreFilterOnOutsideClick(event) {
+      if (storeFilter.contains(event.target)) return;
+      storeFilter.classList.remove('open');
+      storeTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function getSelectedStores() {
+      return Array.from(storeFilter.querySelectorAll('input[type="checkbox"]:checked')).map((checkbox) => checkbox.value);
+    }
+
+    function updateStoreTriggerText() {
+      const checked = Array.from(storeFilter.querySelectorAll('input[type="checkbox"]:checked'));
+      const total = storeFilter.querySelectorAll('input[type="checkbox"]').length;
+
+      if (!checked.length || checked.length === total) {
+        storeTrigger.textContent = '全部';
+        return;
+      }
+
+      storeTrigger.textContent = checked.length === 1
+        ? checked[0].parentElement.textContent.trim()
+        : `已选 ${checked.length} 项`;
     }
 
     function handleBatchDelete() {
@@ -1404,7 +1525,7 @@
 
     function downloadTemplate() {
       const csv = [
-        ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','高客客流-目标数据','高客客流-实际完成','操作人','操作时间'],
+        ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','操作人','操作时间'],
         ['月','2026-05','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()]
       ].map((row) => row.map(formatCsvCell).join(',')).join('\n');
       const blob = new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8;' });
@@ -1526,8 +1647,9 @@
       return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
 
-    function compareDateText(left, right) {
-      const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(8, '0');
+    function compareDateByType(left, right, type) {
+      const length = type === '年' ? 4 : type === '月' ? 6 : 8;
+      const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(length, '0').slice(0, length);
       return normalize(left).localeCompare(normalize(right));
     }
 
