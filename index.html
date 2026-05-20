@@ -733,65 +733,119 @@
       width: 530px;
     }
 
-    .import-steps {
+    .import-modal {
+      width: 760px;
+    }
+
+    .upload-panel {
+      min-height: 238px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      padding-bottom: 14px;
-    }
-
-    .import-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid #edf0f5;
-      border-radius: 4px;
-      background: #fbfcfe;
-    }
-
-    .step-index {
-      width: 22px;
-      height: 22px;
-      display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      background: var(--primary);
-      color: #fff;
-      font-weight: 700;
+      border: 2px dashed #cfd6e2;
+      border-radius: 8px;
+      background: #fbfcff;
+      color: #526174;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
     }
 
-    .step-content {
-      flex: 1;
-      min-width: 0;
+    .upload-panel:hover,
+    .upload-panel.dragover {
+      border-color: var(--primary-light);
+      background: #f4f8ff;
     }
 
-    .step-title {
-      color: #253044;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .step-desc {
-      color: #7b8495;
-      line-height: 20px;
-      margin-bottom: 10px;
-    }
-
-    .upload-row {
+    .upload-icon {
+      width: 78px;
+      height: 78px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      margin-bottom: 22px;
+      border-radius: 50%;
+      background: #e6eaf0;
+      color: #9aa4b3;
+      font-size: 42px;
+      line-height: 1;
     }
 
-    .file-name {
-      color: #667085;
-      max-width: 380px;
+    .upload-title {
+      color: #526174;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .upload-link {
+      color: #2f7df6;
+      font-weight: 700;
+    }
+
+    .upload-tips {
+      margin-top: 18px;
+      color: #64748b;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .template-link {
+      border: 0;
+      background: transparent;
+      color: #2f7df6;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0;
+    }
+
+    .preview-block {
+      display: none;
+      margin-top: 16px;
+      border: 1px solid #edf0f5;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .preview-block.show {
+      display: block;
+    }
+
+    .preview-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 36px;
+      padding: 0 12px;
+      background: #fbfcfe;
+      border-bottom: 1px solid #edf0f5;
+      color: #253044;
+      font-weight: 700;
+    }
+
+    .preview-file {
+      max-width: 420px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: #667085;
+      font-weight: 400;
+    }
+
+    .preview-table-wrap {
+      max-height: 145px;
+      overflow: auto;
+      background: #fff;
+    }
+
+    .preview-table {
+      min-width: 920px;
+      font-size: 12px;
+    }
+
+    .preview-table th,
+    .preview-table td {
+      height: 28px;
+      padding: 0 8px;
     }
 
     .required::before {
@@ -1051,38 +1105,45 @@
   </div>
 
   <div class="modal-mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle">
-    <div class="modal">
+    <div class="modal import-modal">
       <div class="modal-header">
-        <span id="importTitle">导入数据</span>
+        <span id="importTitle">导入</span>
         <button class="modal-close" type="button" id="closeImportModal" aria-label="关闭">×</button>
       </div>
       <div class="modal-body">
-        <div class="import-steps">
-          <div class="import-step">
-            <span class="step-index">1</span>
-            <div class="step-content">
-              <div class="step-title">下载模板</div>
-              <div class="step-desc">请先下载标准模板，按字段要求填写后再上传。</div>
-              <button class="btn btn-default" type="button" id="downloadTemplateBtn">下载模板</button>
-            </div>
+        <div class="upload-panel" id="uploadPanel" tabindex="0" role="button" aria-label="上传导入文件">
+          <div class="upload-icon" aria-hidden="true">⇧</div>
+          <div class="upload-title">拖文件到此处，或<span class="upload-link">点击上传</span></div>
+          <div class="upload-tips">仅允许导入 .xlsx, .xls 格式文件， <button class="template-link" type="button" id="downloadTemplateBtn">下载模板</button></div>
+          <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls">
+        </div>
+        <div class="preview-block" id="importPreviewBlock">
+          <div class="preview-title">
+            <span>数据预览</span>
+            <span class="preview-file" id="importFileName">未选择文件</span>
           </div>
-          <div class="import-step">
-            <span class="step-index">2</span>
-            <div class="step-content">
-              <div class="step-title">上传文件</div>
-              <div class="step-desc">支持 .xlsx、.xls、.csv 格式文件。</div>
-              <div class="upload-row">
-                <button class="btn btn-primary" type="button" id="chooseImportFileBtn">选择文件</button>
-                <span class="file-name" id="importFileName">未选择文件</span>
-                <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls,.csv">
-              </div>
-            </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table" aria-label="导入数据预览">
+              <thead>
+                <tr>
+                  <th>日期类型</th>
+                  <th>日期</th>
+                  <th>门店编码</th>
+                  <th>门店名称</th>
+                  <th>营业收入-目标</th>
+                  <th>营业收入-实际</th>
+                  <th>线下收入-目标</th>
+                  <th>线下收入-实际</th>
+                </tr>
+              </thead>
+              <tbody id="importPreviewBody"></tbody>
+            </table>
           </div>
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn btn-primary" type="button" id="confirmImportBtn">确定</button>
         <button class="btn btn-default" type="button" id="cancelImportModal">取消</button>
-        <button class="btn btn-primary" type="button" id="confirmImportBtn">确定导入</button>
       </div>
     </div>
   </div>
@@ -1164,6 +1225,7 @@
     let selectedIds = new Set();
     let editingId = null;
     let inlineEditingId = null;
+    let importPreviewRows = [];
     let confirmAction = null;
 
     const tableBody = document.getElementById('tableBody');
@@ -1177,8 +1239,11 @@
     const confirmMask = document.getElementById('confirmMask');
     const recordForm = document.getElementById('recordForm');
     const modalTitle = document.getElementById('modalTitle');
+    const uploadPanel = document.getElementById('uploadPanel');
     const importFile = document.getElementById('importFile');
     const importFileName = document.getElementById('importFileName');
+    const importPreviewBlock = document.getElementById('importPreviewBlock');
+    const importPreviewBody = document.getElementById('importPreviewBody');
     const toast = document.getElementById('toast');
 
     updateDateOptions();
@@ -1195,9 +1260,13 @@
     document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
     document.getElementById('importBtn').addEventListener('click', openImportModal);
     document.getElementById('downloadTemplateBtn').addEventListener('click', downloadTemplate);
-    document.getElementById('chooseImportFileBtn').addEventListener('click', () => importFile.click());
+    uploadPanel.addEventListener('click', handleUploadPanelClick);
+    uploadPanel.addEventListener('keydown', handleUploadPanelKeydown);
+    uploadPanel.addEventListener('dragover', handleUploadDragOver);
+    uploadPanel.addEventListener('dragleave', handleUploadDragLeave);
+    uploadPanel.addEventListener('drop', handleUploadDrop);
     document.getElementById('confirmImportBtn').addEventListener('click', handleImport);
-    importFile.addEventListener('change', updateImportFileName);
+    importFile.addEventListener('change', handleImportFileChange);
     document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
     document.getElementById('cancelImportModal').addEventListener('click', closeImportModal);
     document.getElementById('closeModal').addEventListener('click', closeModal);
@@ -1521,44 +1590,85 @@
     }
 
     function openImportModal() {
-      importFile.value = '';
-      importFileName.textContent = '未选择文件';
+      resetImportPreview();
       importMask.classList.add('show');
     }
 
     function closeImportModal() {
       importMask.classList.remove('show');
+      resetImportPreview();
+    }
+
+    function resetImportPreview() {
+      importPreviewRows = [];
       importFile.value = '';
       importFileName.textContent = '未选择文件';
+      importPreviewBody.innerHTML = '';
+      importPreviewBlock.classList.remove('show');
+      uploadPanel.classList.remove('dragover');
     }
 
-    function updateImportFileName() {
-      const file = importFile.files[0];
-      importFileName.textContent = file ? file.name : '未选择文件';
+    function handleUploadPanelClick(event) {
+      if (event.target.closest('#downloadTemplateBtn')) return;
+      importFile.click();
     }
 
-    function downloadTemplate() {
-      const csv = [
-        ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','操作人','操作时间'],
-        ['月','2026-05','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()]
-      ].map((row) => row.map(formatCsvCell).join(',')).join('\n');
-      const blob = new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = '零售运营中心利润表导入模板.csv';
-      link.click();
-      URL.revokeObjectURL(link.href);
-      showToast('模板下载成功');
+    function handleUploadPanelKeydown(event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      importFile.click();
     }
 
-    function handleImport() {
-      const file = importFile.files[0];
-      if (!file) {
-        showToast('请先选择要导入的文件');
+    function handleUploadDragOver(event) {
+      event.preventDefault();
+      uploadPanel.classList.add('dragover');
+    }
+
+    function handleUploadDragLeave() {
+      uploadPanel.classList.remove('dragover');
+    }
+
+    function handleUploadDrop(event) {
+      event.preventDefault();
+      uploadPanel.classList.remove('dragover');
+      previewImportFile(event.dataTransfer.files[0]);
+    }
+
+    function handleImportFileChange() {
+      previewImportFile(importFile.files[0]);
+    }
+
+    function previewImportFile(file) {
+      if (!file) return;
+      if (!/\.(xlsx|xls)$/i.test(file.name)) {
+        showToast('仅允许导入 .xlsx、.xls 格式文件');
         return;
       }
 
-      rows.unshift({
+      importPreviewRows = [createImportPreviewRecord(file.name)];
+      importFileName.textContent = file.name;
+      renderImportPreview();
+      importPreviewBlock.classList.add('show');
+      showToast('文件已选择，请预览后点击确定');
+    }
+
+    function renderImportPreview() {
+      importPreviewBody.innerHTML = importPreviewRows.map((row) => `
+        <tr>
+          <td>${escapeHtml(row.dateType)}</td>
+          <td>${escapeHtml(row.date)}</td>
+          <td>${escapeHtml(row.storeCode)}</td>
+          <td>${escapeHtml(row.storeName)}</td>
+          <td>${escapeHtml(row.revenueTarget)}</td>
+          <td>${escapeHtml(row.revenueActual)}</td>
+          <td>${escapeHtml(row.offlineTarget)}</td>
+          <td>${escapeHtml(row.offlineActual)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function createImportPreviewRecord(fileName) {
+      return {
         id: createId(),
         dateType: '月',
         date: '2026-05',
@@ -1573,15 +1683,43 @@
         vipFlowTarget: 'xxxx.xx',
         vipFlowActual: 'xxxx.xx',
         operator: 'wangkeke',
-        operateTime: nowText()
-      });
+        operateTime: nowText(),
+        sourceFile: fileName
+      };
+    }
 
+    function downloadTemplate() {
+      const headers = ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','操作人','操作时间'];
+      const sample = ['月','2026-05','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()];
+      const table = `
+        <html><head><meta charset="utf-8"></head><body>
+          <table>
+            <tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join('')}</tr>
+            <tr>${sample.map((item) => `<td>${escapeHtml(item)}</td>`).join('')}</tr>
+          </table>
+        </body></html>`;
+      const blob = new Blob([table], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = '零售运营中心利润表导入模板.xls';
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast('模板下载成功');
+    }
+
+    function handleImport() {
+      if (!importPreviewRows.length) {
+        showToast('请先上传文件并预览数据');
+        return;
+      }
+
+      rows = [...importPreviewRows.map(({ sourceFile, ...row }) => row), ...rows];
       inlineEditingId = null;
       saveRows();
       updateDateOptions();
       applyCurrentFilters();
       closeImportModal();
-      showToast(`导入成功：${file.name}`);
+      showToast('导入成功');
     }
 
     function openModal(record) {
@@ -1666,10 +1804,6 @@
       const length = type === '年' ? 4 : type === '月' ? 6 : 8;
       const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(length, '0').slice(0, length);
       return normalize(left).localeCompare(normalize(right));
-    }
-
-    function formatCsvCell(value) {
-      return `"${String(value ?? '').replace(/"/g, '""')}"`;
     }
 
     function escapeAttribute(value) {
