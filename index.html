@@ -340,9 +340,16 @@
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .filter-text,
-    .filter-select.date-select {
+    .filter-text {
       width: 148px;
+    }
+
+    .filter-text.date-input {
+      width: 184px;
+      height: 32px;
+      padding-right: 34px;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .filter-select.type {
@@ -431,11 +438,118 @@
 
     .date-wrap {
       position: relative;
+      display: inline-flex;
+      align-items: center;
     }
 
+    .calendar-btn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #111827;
+      border-radius: 1px;
+      background:
+        linear-gradient(#111827, #111827) 0 4px / 12px 1px no-repeat,
+        linear-gradient(#111827, #111827) 3px 0 / 1px 4px no-repeat,
+        linear-gradient(#111827, #111827) 9px 0 / 1px 4px no-repeat,
+        #fff;
+      padding: 0;
+    }
 
-    .date-wrap input {
-      padding-right: 24px;
+    .calendar-popover {
+      position: fixed;
+      z-index: 70;
+      display: none;
+      width: 318px;
+      padding: 16px 16px 12px;
+      border: 1px solid #d5dbe6;
+      border-radius: 2px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+    }
+
+    .calendar-popover.show {
+      display: block;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 30px;
+      margin-bottom: 12px;
+    }
+
+    .calendar-title {
+      border: 0;
+      background: transparent;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .calendar-title::after {
+      content: "";
+      display: inline-block;
+      margin-left: 5px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #111827;
+      vertical-align: middle;
+    }
+
+    .calendar-nav {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      background: transparent;
+      color: #111827;
+      font-size: 26px;
+      line-height: 28px;
+    }
+
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .month-option {
+      height: 34px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: #fff;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    .month-option:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .month-option.selected {
+      border-color: #0d72e8;
+      background: #0d72e8;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .calendar-footer {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+    }
+
+    .calendar-link {
+      border: 0;
+      background: transparent;
+      color: #1677ff;
+      font-size: 14px;
+      padding: 0;
     }
 
     .spacer-wide {
@@ -971,11 +1085,11 @@
         </div>
         <div class="filter-group">
           <label for="startDate">日期：</label>
-          <span class="date-wrap"><select id="startDate" class="filter-select date-select"></select></span>
+          <span class="date-wrap"><input id="startDate" class="filter-text date-input" type="text" placeholder="选择年月" readonly><button class="calendar-btn" type="button" data-picker="startDate" aria-label="选择开始日期"></button></span>
         </div>
         <div class="filter-group">
           <label for="endDate">至</label>
-          <span class="date-wrap"><select id="endDate" class="filter-select date-select"></select></span>
+          <span class="date-wrap"><input id="endDate" class="filter-text date-input" type="text" placeholder="选择年月" readonly><button class="calendar-btn" type="button" data-picker="endDate" aria-label="选择结束日期"></button></span>
         </div>
         <div class="filter-group">
           <label for="storeTrigger">门店：</label>
@@ -1031,6 +1145,19 @@
         </table>
       </section>
     </main>
+  </div>
+
+  <div class="calendar-popover" id="calendarPopover">
+    <div class="calendar-header">
+      <button class="calendar-nav" type="button" id="calendarPrev" aria-label="上一年">↑</button>
+      <button class="calendar-title" type="button" id="calendarTitle"></button>
+      <button class="calendar-nav" type="button" id="calendarNext" aria-label="下一年">↓</button>
+    </div>
+    <div class="month-grid" id="monthGrid"></div>
+    <div class="calendar-footer">
+      <button class="calendar-link" type="button" id="calendarClear">清除</button>
+      <button class="calendar-link" type="button" id="calendarToday">本月</button>
+    </div>
   </div>
 
   <div class="modal-mask" id="editMask" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -1226,6 +1353,8 @@
     let editingId = null;
     let inlineEditingId = null;
     let importPreviewRows = [];
+    let activeDateInput = null;
+    let calendarViewDate = parseDateValue(nowDateText()) || new Date();
     let confirmAction = null;
 
     const tableBody = document.getElementById('tableBody');
@@ -1244,18 +1373,31 @@
     const importFileName = document.getElementById('importFileName');
     const importPreviewBlock = document.getElementById('importPreviewBlock');
     const importPreviewBody = document.getElementById('importPreviewBody');
+    const calendarPopover = document.getElementById('calendarPopover');
+    const calendarTitle = document.getElementById('calendarTitle');
+    const monthGrid = document.getElementById('monthGrid');
     const toast = document.getElementById('toast');
 
-    updateDateOptions();
+    updateDateInputMode();
     updateStoreTriggerText();
     renderTable();
 
     document.getElementById('queryBtn').addEventListener('click', handleQuery);
     document.getElementById('resetBtn').addEventListener('click', handleReset);
+    startDate.addEventListener('click', () => openCalendar(startDate));
+    endDate.addEventListener('click', () => openCalendar(endDate));
+    document.querySelectorAll('.calendar-btn').forEach((button) => {
+      button.addEventListener('click', () => openCalendar(document.getElementById(button.dataset.picker)));
+    });
+    document.getElementById('calendarPrev').addEventListener('click', () => shiftCalendarYear(-1));
+    document.getElementById('calendarNext').addEventListener('click', () => shiftCalendarYear(1));
+    calendarTitle.addEventListener('click', selectCalendarYear);
+    document.getElementById('calendarClear').addEventListener('click', clearCalendarSelection);
+    document.getElementById('calendarToday').addEventListener('click', selectToday);
     dateType.addEventListener('change', handleDateTypeChange);
     storeTrigger.addEventListener('click', toggleStoreFilter);
     storeFilter.addEventListener('change', updateStoreTriggerText);
-    document.addEventListener('click', closeStoreFilterOnOutsideClick);
+    document.addEventListener('click', closeFloatingControlsOnOutsideClick);
     document.getElementById('addBtn').addEventListener('click', () => openModal());
     document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
     document.getElementById('importBtn').addEventListener('click', openImportModal);
@@ -1305,7 +1447,7 @@
 
       saveRows();
       selectedIds.clear();
-      updateDateOptions();
+      updateDateInputMode();
       applyCurrentFilters();
       closeModal();
     });
@@ -1341,7 +1483,7 @@
           rows = rows.filter((item) => item.id !== id);
           selectedIds.delete(id);
           saveRows();
-          updateDateOptions();
+          updateDateInputMode();
           applyCurrentFilters();
           showToast('删除成功');
         });
@@ -1458,7 +1600,7 @@
       rows = rows.map((item) => item.id === id ? updated : item);
       inlineEditingId = null;
       saveRows();
-      updateDateOptions();
+      updateDateInputMode();
       applyCurrentFilters();
       showToast('保存成功');
     }
@@ -1477,7 +1619,7 @@
       storeFilter.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
         checkbox.checked = true;
       });
-      updateDateOptions();
+      updateDateInputMode();
       updateStoreTriggerText();
       selectedIds.clear();
       inlineEditingId = null;
@@ -1504,55 +1646,114 @@
     }
 
     function handleDateTypeChange() {
-      updateDateOptions();
+      startDate.value = '';
+      endDate.value = '';
+      updateDateInputMode();
+      closeCalendar();
     }
 
-    function updateDateOptions() {
-      const startValue = startDate.value;
-      const endValue = endDate.value;
-      const options = getDateOptionsByType(dateType.value);
+    function updateDateInputMode() {
       const placeholder = dateType.value === '年'
-        ? '请选择年份'
-        : dateType.value === '月'
-          ? '请选择月份'
-          : '请选择日期';
-      renderDateSelectOptions(startDate, options, placeholder, startValue);
-      renderDateSelectOptions(endDate, options, placeholder, endValue);
+        ? '选择年份'
+        : '选择年月';
+      startDate.placeholder = placeholder;
+      endDate.placeholder = placeholder;
     }
 
-    function getDateOptionsByType(type) {
-      const values = Array.from(new Set(rows
-        .filter((row) => !type || row.dateType === type)
-        .map((row) => normalizeDateOption(row.date, type))
-        .filter(Boolean)));
-      return values.sort((a, b) => b.localeCompare(a));
+    function openCalendar(input) {
+      activeDateInput = input;
+      storeFilter.classList.remove('open');
+      storeTrigger.setAttribute('aria-expanded', 'false');
+      const current = parseDateValue(input.value) || parseDateValue(nowDateText()) || new Date();
+      calendarViewDate = new Date(current.getFullYear(), current.getMonth(), 1);
+      renderCalendar();
+      const rect = input.parentElement.getBoundingClientRect();
+      calendarPopover.style.left = `${rect.left}px`;
+      calendarPopover.style.top = `${rect.bottom + 4}px`;
+      calendarPopover.classList.add('show');
     }
 
-    function normalizeDateOption(value, type) {
+    function closeCalendar() {
+      calendarPopover.classList.remove('show');
+      activeDateInput = null;
+    }
+
+    function shiftCalendarYear(offset) {
+      calendarViewDate = new Date(calendarViewDate.getFullYear() + offset, calendarViewDate.getMonth(), 1);
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const year = calendarViewDate.getFullYear();
+      const selected = activeDateInput ? parseDateValue(activeDateInput.value) : null;
+      calendarTitle.textContent = `${year}年`;
+      monthGrid.innerHTML = Array.from({ length: 12 }, (_, index) => {
+        const month = index + 1;
+        const value = `${year}-${String(month).padStart(2, '0')}`;
+        const classes = ['month-option'];
+        if (selected && selected.getFullYear() === year && selected.getMonth() === index) classes.push('selected');
+        return `<button class="${classes.join(' ')}" type="button" data-month="${value}">${month}月</button>`;
+      }).join('');
+      monthGrid.querySelectorAll('[data-month]').forEach((button) => {
+        button.addEventListener('click', () => selectCalendarMonth(button.dataset.month));
+      });
+    }
+
+    function selectCalendarYear() {
+      if (!activeDateInput || dateType.value !== '年') return;
+      activeDateInput.value = String(calendarViewDate.getFullYear());
+      closeCalendar();
+    }
+
+    function selectCalendarMonth(value) {
+      if (!activeDateInput) return;
+      activeDateInput.value = dateType.value === '年' ? value.slice(0, 4) : value;
+      closeCalendar();
+    }
+
+    function clearCalendarSelection() {
+      if (activeDateInput) activeDateInput.value = '';
+      closeCalendar();
+    }
+
+    function selectToday() {
+      const today = new Date();
+      selectCalendarMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
+    }
+
+    function formatDateValue(date) {
+      const pad = (num) => String(num).padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function parseDateValue(value) {
       const digits = String(value || '').replace(/[^0-9]/g, '');
-      if (!digits) return '';
-      if (type === '年') return digits.slice(0, 4);
-      if (type === '月') return `${digits.slice(0, 4)}-${digits.slice(4, 6)}`;
-      return digits.length >= 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : digits.slice(0, 4);
+      if (digits.length >= 8) return new Date(Number(digits.slice(0, 4)), Number(digits.slice(4, 6)) - 1, Number(digits.slice(6, 8)));
+      if (digits.length >= 6) return new Date(Number(digits.slice(0, 4)), Number(digits.slice(4, 6)) - 1, 1);
+      if (digits.length >= 4) return new Date(Number(digits.slice(0, 4)), 0, 1);
+      return null;
     }
 
-    function renderDateSelectOptions(select, options, placeholder, selectedValue) {
-      select.innerHTML = `<option value="">${placeholder}</option>${options.map((option) => `<option value="${escapeAttribute(option)}">${escapeHtml(option)}</option>`).join('')}`;
-      if (options.includes(selectedValue)) {
-        select.value = selectedValue;
-      }
+    function nowDateText() {
+      return formatDateValue(new Date());
     }
 
     function toggleStoreFilter(event) {
       event.stopPropagation();
+      closeCalendar();
       const isOpen = storeFilter.classList.toggle('open');
       storeTrigger.setAttribute('aria-expanded', String(isOpen));
     }
 
-    function closeStoreFilterOnOutsideClick(event) {
-      if (storeFilter.contains(event.target)) return;
-      storeFilter.classList.remove('open');
-      storeTrigger.setAttribute('aria-expanded', 'false');
+    function closeFloatingControlsOnOutsideClick(event) {
+      if (!storeFilter.contains(event.target)) {
+        storeFilter.classList.remove('open');
+        storeTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      if (!calendarPopover.contains(event.target) && !event.target.closest('.date-wrap')) {
+        closeCalendar();
+      }
     }
 
     function getSelectedStores() {
@@ -1583,7 +1784,7 @@
         rows = rows.filter((item) => !selectedIds.has(item.id));
         selectedIds.clear();
         saveRows();
-        updateDateOptions();
+        updateDateInputMode();
         applyCurrentFilters();
         showToast('批量删除成功');
       });
@@ -1716,7 +1917,7 @@
       rows = [...importPreviewRows.map(({ sourceFile, ...row }) => row), ...rows];
       inlineEditingId = null;
       saveRows();
-      updateDateOptions();
+      updateDateInputMode();
       applyCurrentFilters();
       closeImportModal();
       showToast('导入成功');
