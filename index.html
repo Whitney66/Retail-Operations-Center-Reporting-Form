@@ -520,23 +520,29 @@
       text-align: left;
     }
 
-    .cell-input {
-      width: 68px;
+    .row-input,
+    .row-select {
+      width: 100%;
       height: 22px;
       border: 1px solid #d6dce6;
       border-radius: 2px;
       outline: none;
-      text-align: left;
+      text-align: center;
       color: #4d596b;
-      padding: 0 6px;
+      padding: 0 4px;
       background: #fff;
     }
 
-    .cell-input::placeholder {
+    .row-input.name-input {
+      text-align: left;
+    }
+
+    .row-input::placeholder {
       color: #a5afbd;
     }
 
-    .cell-input:focus {
+    .row-input:focus,
+    .row-select:focus {
       border-color: var(--primary-light);
       box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
     }
@@ -669,6 +675,67 @@
 
     .form-item.full input {
       width: 530px;
+    }
+
+    .import-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 14px;
+    }
+
+    .import-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #edf0f5;
+      border-radius: 4px;
+      background: #fbfcfe;
+    }
+
+    .step-index {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .step-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step-title {
+      color: #253044;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      color: #7b8495;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+
+    .upload-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-name {
+      color: #667085;
+      max-width: 380px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .required::before {
@@ -818,7 +885,6 @@
         <button class="btn btn-primary" type="button" id="importBtn">导入</button>
         <button class="btn btn-primary" type="button" id="addBtn">+ 新增</button>
         <button class="btn btn-danger-ghost" type="button" id="batchDeleteBtn">批量删除</button>
-        <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls,.csv">
       </section>
 
       <section class="table-wrap">
@@ -867,6 +933,7 @@
             <div class="form-item">
               <label class="required" for="formDateType">日期类型</label>
               <select id="formDateType" name="dateType" required>
+                <option value="">请选择</option>
                 <option value="年">年</option>
                 <option value="月">月</option>
               </select>
@@ -930,6 +997,43 @@
           <button class="btn btn-primary" type="submit">确定</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="importTitle">导入数据</span>
+        <button class="modal-close" type="button" id="closeImportModal" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="import-steps">
+          <div class="import-step">
+            <span class="step-index">1</span>
+            <div class="step-content">
+              <div class="step-title">下载模板</div>
+              <div class="step-desc">请先下载标准模板，按字段要求填写后再上传。</div>
+              <button class="btn btn-default" type="button" id="downloadTemplateBtn">下载模板</button>
+            </div>
+          </div>
+          <div class="import-step">
+            <span class="step-index">2</span>
+            <div class="step-content">
+              <div class="step-title">上传文件</div>
+              <div class="step-desc">支持 .xlsx、.xls、.csv 格式文件。</div>
+              <div class="upload-row">
+                <button class="btn btn-primary" type="button" id="chooseImportFileBtn">选择文件</button>
+                <span class="file-name" id="importFileName">未选择文件</span>
+                <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls,.csv">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" id="cancelImportModal">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmImportBtn">确定导入</button>
+      </div>
     </div>
   </div>
 
@@ -1009,6 +1113,7 @@
     let visibleRows = [...rows];
     let selectedIds = new Set();
     let editingId = null;
+    let inlineEditingId = null;
     let confirmAction = null;
 
     const tableBody = document.getElementById('tableBody');
@@ -1017,9 +1122,12 @@
     const dateType = document.getElementById('dateType');
     const storeFilter = document.getElementById('storeFilter');
     const editMask = document.getElementById('editMask');
+    const importMask = document.getElementById('importMask');
     const confirmMask = document.getElementById('confirmMask');
     const recordForm = document.getElementById('recordForm');
     const modalTitle = document.getElementById('modalTitle');
+    const importFile = document.getElementById('importFile');
+    const importFileName = document.getElementById('importFileName');
     const toast = document.getElementById('toast');
 
     renderTable();
@@ -1028,8 +1136,13 @@
     document.getElementById('resetBtn').addEventListener('click', handleReset);
     document.getElementById('addBtn').addEventListener('click', () => openModal());
     document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
-    document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
-    document.getElementById('importFile').addEventListener('change', handleImport);
+    document.getElementById('importBtn').addEventListener('click', openImportModal);
+    document.getElementById('downloadTemplateBtn').addEventListener('click', downloadTemplate);
+    document.getElementById('chooseImportFileBtn').addEventListener('click', () => importFile.click());
+    document.getElementById('confirmImportBtn').addEventListener('click', handleImport);
+    importFile.addEventListener('change', updateImportFileName);
+    document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
+    document.getElementById('cancelImportModal').addEventListener('click', closeImportModal);
     document.getElementById('closeModal').addEventListener('click', closeModal);
     document.getElementById('cancelModal').addEventListener('click', closeModal);
     document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
@@ -1040,6 +1153,10 @@
 
     editMask.addEventListener('click', (event) => {
       if (event.target === editMask) closeModal();
+    });
+
+    importMask.addEventListener('click', (event) => {
+      if (event.target === importMask) closeImportModal();
     });
 
     confirmMask.addEventListener('click', (event) => {
@@ -1068,12 +1185,26 @@
 
     tableBody.addEventListener('click', (event) => {
       const editButton = event.target.closest('[data-action="edit"]');
+      const saveButton = event.target.closest('[data-action="save"]');
+      const cancelButton = event.target.closest('[data-action="cancel-edit"]');
       const deleteButton = event.target.closest('[data-action="delete"]');
-      const input = event.target.closest('.cell-input');
+      const rowField = event.target.closest('[data-field]');
 
       if (editButton) {
-        const id = editButton.dataset.id;
-        openModal(rows.find((item) => item.id === id));
+        inlineEditingId = editButton.dataset.id;
+        selectedIds.delete(inlineEditingId);
+        renderTable();
+        return;
+      }
+
+      if (saveButton) {
+        saveInlineEdit(saveButton.dataset.id);
+        return;
+      }
+
+      if (cancelButton) {
+        inlineEditingId = null;
+        renderTable();
         return;
       }
 
@@ -1089,7 +1220,7 @@
         return;
       }
 
-      if (input) return;
+      if (rowField) return;
 
       const tr = event.target.closest('tr[data-id]');
       if (!tr) return;
@@ -1103,19 +1234,12 @@
     });
 
     tableBody.addEventListener('dblclick', (event) => {
-      if (event.target.closest('button') || event.target.closest('input')) return;
+      if (event.target.closest('button') || event.target.closest('input') || event.target.closest('select')) return;
       const tr = event.target.closest('tr[data-id]');
       if (!tr) return;
-      openModal(rows.find((item) => item.id === tr.dataset.id));
-    });
-
-    tableBody.addEventListener('input', (event) => {
-      const input = event.target.closest('.cell-input');
-      if (!input) return;
-      const id = input.dataset.id;
-      rows = rows.map((item) => item.id === id ? { ...item, revenueTarget: input.value } : item);
-      visibleRows = visibleRows.map((item) => item.id === id ? { ...item, revenueTarget: input.value } : item);
-      saveRows();
+      inlineEditingId = tr.dataset.id;
+      selectedIds.delete(inlineEditingId);
+      renderTable();
     });
 
     function loadRows() {
@@ -1139,31 +1263,30 @@
 
       tableBody.innerHTML = visibleRows.map((row, index) => {
         const selected = selectedIds.has(row.id) ? ' selected' : '';
-        const revenueTargetCell = row.revenueTarget
-          ? escapeHtml(row.revenueTarget)
-          : `<input class="cell-input" data-id="${row.id}" type="text" placeholder="请输入内容" aria-label="营业收入目标数据">`;
+        const isEditing = row.id === inlineEditingId;
 
         return `
           <tr class="${selected}" data-id="${row.id}" title="单击选择，双击编辑">
             <td>${index + 1}</td>
-            <td>${escapeHtml(row.dateType)}</td>
-            <td>${escapeHtml(row.date)}</td>
-            <td>${escapeHtml(row.storeCode)}</td>
-            <td class="td-name">${escapeHtml(row.storeName)}</td>
-            <td>${revenueTargetCell}</td>
-            <td>${escapeHtml(row.revenueActual)}</td>
-            <td>${escapeHtml(row.offlineTarget)}</td>
-            <td>${escapeHtml(row.offlineActual)}</td>
-            <td>${escapeHtml(row.flowTarget)}</td>
-            <td>${escapeHtml(row.flowActual)}</td>
-            <td>${escapeHtml(row.vipFlowTarget)}</td>
-            <td>${escapeHtml(row.vipFlowActual)}</td>
-            <td>${escapeHtml(row.operator)}</td>
-            <td>${escapeHtml(row.operateTime)}</td>
+            ${renderCell(row, 'dateType', isEditing, 'select')}
+            ${renderCell(row, 'date', isEditing)}
+            ${renderCell(row, 'storeCode', isEditing)}
+            ${renderCell(row, 'storeName', isEditing, 'text', 'td-name')}
+            ${renderCell(row, 'revenueTarget', isEditing)}
+            ${renderCell(row, 'revenueActual', isEditing)}
+            ${renderCell(row, 'offlineTarget', isEditing)}
+            ${renderCell(row, 'offlineActual', isEditing)}
+            ${renderCell(row, 'flowTarget', isEditing)}
+            ${renderCell(row, 'flowActual', isEditing)}
+            ${renderCell(row, 'vipFlowTarget', isEditing)}
+            ${renderCell(row, 'vipFlowActual', isEditing)}
+            ${renderCell(row, 'operator', isEditing)}
+            ${renderCell(row, 'operateTime', isEditing)}
             <td>
               <span class="operation">
-                <button class="link-btn" type="button" data-action="edit" data-id="${row.id}">编辑</button>
-                <button class="link-btn" type="button" data-action="delete" data-id="${row.id}">删除</button>
+                ${isEditing
+                  ? `<button class="link-btn" type="button" data-action="save" data-id="${row.id}">保存</button><button class="link-btn" type="button" data-action="cancel-edit" data-id="${row.id}">取消</button>`
+                  : `<button class="link-btn" type="button" data-action="edit" data-id="${row.id}">编辑</button><button class="link-btn" type="button" data-action="delete" data-id="${row.id}">删除</button>`}
               </span>
             </td>
           </tr>
@@ -1171,8 +1294,49 @@
       }).join('');
     }
 
+    function renderCell(row, field, isEditing, type = 'text', className = '') {
+      const classAttr = className ? ` class="${className}"` : '';
+      const value = row[field] || '';
+
+      if (!isEditing) {
+        return `<td${classAttr}>${escapeHtml(value)}</td>`;
+      }
+
+      if (type === 'select') {
+        return `
+          <td${classAttr}>
+            <select class="row-select" data-field="${field}">
+              <option value="年" ${value === '年' ? 'selected' : ''}>年</option>
+              <option value="月" ${value === '月' ? 'selected' : ''}>月</option>
+            </select>
+          </td>
+        `;
+      }
+
+      const inputClass = field === 'storeName' ? 'row-input name-input' : 'row-input';
+      return `<td${classAttr}><input class="${inputClass}" data-field="${field}" type="text" value="${escapeAttribute(value)}"></td>`;
+    }
+
+    function saveInlineEdit(id) {
+      const tr = tableBody.querySelector(`tr[data-id="${id}"]`);
+      if (!tr) return;
+
+      const updated = { ...rows.find((item) => item.id === id) };
+      tr.querySelectorAll('[data-field]').forEach((fieldEl) => {
+        updated[fieldEl.dataset.field] = fieldEl.value;
+      });
+      updated.operateTime = nowText();
+
+      rows = rows.map((item) => item.id === id ? updated : item);
+      inlineEditingId = null;
+      saveRows();
+      applyCurrentFilters();
+      showToast('保存成功');
+    }
+
     function handleQuery() {
       selectedIds.clear();
+      inlineEditingId = null;
       applyCurrentFilters();
       showToast(`查询完成，共 ${visibleRows.length} 条数据`);
     }
@@ -1183,6 +1347,7 @@
       dateType.value = '';
       storeFilter.value = '';
       selectedIds.clear();
+      inlineEditingId = null;
       visibleRows = [...rows];
       renderTable();
       showToast('已重置');
@@ -1220,9 +1385,43 @@
       });
     }
 
-    function handleImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function openImportModal() {
+      importFile.value = '';
+      importFileName.textContent = '未选择文件';
+      importMask.classList.add('show');
+    }
+
+    function closeImportModal() {
+      importMask.classList.remove('show');
+      importFile.value = '';
+      importFileName.textContent = '未选择文件';
+    }
+
+    function updateImportFileName() {
+      const file = importFile.files[0];
+      importFileName.textContent = file ? file.name : '未选择文件';
+    }
+
+    function downloadTemplate() {
+      const csv = [
+        ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','高客客流-目标数据','高客客流-实际完成','操作人','操作时间'],
+        ['月','2026-05','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()]
+      ].map((row) => row.map(formatCsvCell).join(',')).join('\n');
+      const blob = new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = '零售运营中心利润表导入模板.csv';
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast('模板下载成功');
+    }
+
+    function handleImport() {
+      const file = importFile.files[0];
+      if (!file) {
+        showToast('请先选择要导入的文件');
+        return;
+      }
 
       rows.unshift({
         id: createId(),
@@ -1242,9 +1441,10 @@
         operateTime: nowText()
       });
 
-      event.target.value = '';
+      inlineEditingId = null;
       saveRows();
       applyCurrentFilters();
+      closeImportModal();
       showToast(`导入成功：${file.name}`);
     }
 
@@ -1254,20 +1454,20 @@
       recordForm.reset();
 
       const values = record || {
-        dateType: '月',
-        date: '2026-05',
-        storeCode: '6826',
-        storeName: '广州新免免税品有限公司',
+        dateType: '',
+        date: '',
+        storeCode: '',
+        storeName: '',
         revenueTarget: '',
-        revenueActual: 'xxxx.xx',
-        offlineTarget: '9865.11',
-        offlineActual: 'xxxx.xx',
-        flowTarget: 'xxxx.xx',
-        flowActual: 'xxxx.xx',
-        vipFlowTarget: 'xxxx.xx',
-        vipFlowActual: 'xxxx.xx',
-        operator: 'wangkeke',
-        operateTime: nowText()
+        revenueActual: '',
+        offlineTarget: '',
+        offlineActual: '',
+        flowTarget: '',
+        flowActual: '',
+        vipFlowTarget: '',
+        vipFlowActual: '',
+        operator: '',
+        operateTime: ''
       };
 
       for (const [key, value] of Object.entries(values)) {
@@ -1300,18 +1500,18 @@
     function normalizeRecord(data) {
       return {
         dateType: data.dateType || '月',
-        date: data.date || '2026-05',
-        storeCode: data.storeCode || '6826',
-        storeName: data.storeName || '广州新免免税品有限公司',
+        date: data.date || '',
+        storeCode: data.storeCode || '',
+        storeName: data.storeName || '',
         revenueTarget: data.revenueTarget || '',
-        revenueActual: data.revenueActual || 'xxxx.xx',
-        offlineTarget: data.offlineTarget || '9865.11',
-        offlineActual: data.offlineActual || 'xxxx.xx',
-        flowTarget: data.flowTarget || 'xxxx.xx',
-        flowActual: data.flowActual || 'xxxx.xx',
-        vipFlowTarget: data.vipFlowTarget || 'xxxx.xx',
-        vipFlowActual: data.vipFlowActual || 'xxxx.xx',
-        operator: data.operator || 'wangkeke',
+        revenueActual: data.revenueActual || '',
+        offlineTarget: data.offlineTarget || '',
+        offlineActual: data.offlineActual || '',
+        flowTarget: data.flowTarget || '',
+        flowActual: data.flowActual || '',
+        vipFlowTarget: data.vipFlowTarget || '',
+        vipFlowActual: data.vipFlowActual || '',
+        operator: data.operator || '',
         operateTime: data.operateTime || nowText()
       };
     }
@@ -1329,6 +1529,14 @@
     function compareDateText(left, right) {
       const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(8, '0');
       return normalize(left).localeCompare(normalize(right));
+    }
+
+    function formatCsvCell(value) {
+      return `"${String(value ?? '').replace(/"/g, '""')}"`;
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
     }
 
     function escapeHtml(value) {
