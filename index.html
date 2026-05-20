@@ -340,7 +340,8 @@
       transition: border-color 0.15s, box-shadow 0.15s;
     }
 
-    .filter-text {
+    .filter-text,
+    .filter-select.date-select {
       width: 148px;
     }
 
@@ -432,21 +433,6 @@
       position: relative;
     }
 
-    .date-wrap::after {
-      content: "";
-      position: absolute;
-      right: 7px;
-      top: 6px;
-      width: 10px;
-      height: 10px;
-      background:
-        linear-gradient(#aab3c1, #aab3c1) 0 3px / 10px 1px no-repeat,
-        linear-gradient(#aab3c1, #aab3c1) 2px 0 / 1px 3px no-repeat,
-        linear-gradient(#aab3c1, #aab3c1) 7px 0 / 1px 3px no-repeat;
-      border: 1px solid #aab3c1;
-      border-radius: 1px;
-      pointer-events: none;
-    }
 
     .date-wrap input {
       padding-right: 24px;
@@ -931,11 +917,11 @@
         </div>
         <div class="filter-group">
           <label for="startDate">日期：</label>
-          <span class="date-wrap"><input id="startDate" class="filter-text" type="text" placeholder="选择时间"></span>
+          <span class="date-wrap"><select id="startDate" class="filter-select date-select"></select></span>
         </div>
         <div class="filter-group">
           <label for="endDate">至</label>
-          <span class="date-wrap"><input id="endDate" class="filter-text" type="text" placeholder="选择时间"></span>
+          <span class="date-wrap"><select id="endDate" class="filter-select date-select"></select></span>
         </div>
         <div class="filter-group">
           <label for="storeTrigger">门店：</label>
@@ -1195,7 +1181,7 @@
     const importFileName = document.getElementById('importFileName');
     const toast = document.getElementById('toast');
 
-    updateDatePlaceholders();
+    updateDateOptions();
     updateStoreTriggerText();
     renderTable();
 
@@ -1250,6 +1236,7 @@
 
       saveRows();
       selectedIds.clear();
+      updateDateOptions();
       applyCurrentFilters();
       closeModal();
     });
@@ -1285,6 +1272,7 @@
           rows = rows.filter((item) => item.id !== id);
           selectedIds.delete(id);
           saveRows();
+          updateDateOptions();
           applyCurrentFilters();
           showToast('删除成功');
         });
@@ -1401,6 +1389,7 @@
       rows = rows.map((item) => item.id === id ? updated : item);
       inlineEditingId = null;
       saveRows();
+      updateDateOptions();
       applyCurrentFilters();
       showToast('保存成功');
     }
@@ -1419,7 +1408,7 @@
       storeFilter.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
         checkbox.checked = true;
       });
-      updateDatePlaceholders();
+      updateDateOptions();
       updateStoreTriggerText();
       selectedIds.clear();
       inlineEditingId = null;
@@ -1446,19 +1435,43 @@
     }
 
     function handleDateTypeChange() {
-      startDate.value = '';
-      endDate.value = '';
-      updateDatePlaceholders();
+      updateDateOptions();
     }
 
-    function updateDatePlaceholders() {
+    function updateDateOptions() {
+      const startValue = startDate.value;
+      const endValue = endDate.value;
+      const options = getDateOptionsByType(dateType.value);
       const placeholder = dateType.value === '年'
-        ? '例如：2026'
+        ? '请选择年份'
         : dateType.value === '月'
-          ? '例如：2026-05'
-          : '选择时间';
-      startDate.placeholder = placeholder;
-      endDate.placeholder = placeholder;
+          ? '请选择月份'
+          : '请选择日期';
+      renderDateSelectOptions(startDate, options, placeholder, startValue);
+      renderDateSelectOptions(endDate, options, placeholder, endValue);
+    }
+
+    function getDateOptionsByType(type) {
+      const values = Array.from(new Set(rows
+        .filter((row) => !type || row.dateType === type)
+        .map((row) => normalizeDateOption(row.date, type))
+        .filter(Boolean)));
+      return values.sort((a, b) => b.localeCompare(a));
+    }
+
+    function normalizeDateOption(value, type) {
+      const digits = String(value || '').replace(/[^0-9]/g, '');
+      if (!digits) return '';
+      if (type === '年') return digits.slice(0, 4);
+      if (type === '月') return `${digits.slice(0, 4)}-${digits.slice(4, 6)}`;
+      return digits.length >= 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : digits.slice(0, 4);
+    }
+
+    function renderDateSelectOptions(select, options, placeholder, selectedValue) {
+      select.innerHTML = `<option value="">${placeholder}</option>${options.map((option) => `<option value="${escapeAttribute(option)}">${escapeHtml(option)}</option>`).join('')}`;
+      if (options.includes(selectedValue)) {
+        select.value = selectedValue;
+      }
     }
 
     function toggleStoreFilter(event) {
@@ -1501,6 +1514,7 @@
         rows = rows.filter((item) => !selectedIds.has(item.id));
         selectedIds.clear();
         saveRows();
+        updateDateOptions();
         applyCurrentFilters();
         showToast('批量删除成功');
       });
@@ -1564,6 +1578,7 @@
 
       inlineEditingId = null;
       saveRows();
+      updateDateOptions();
       applyCurrentFilters();
       closeImportModal();
       showToast(`导入成功：${file.name}`);
