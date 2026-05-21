@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>零售运营中心利润表 - 高保真原型</title>
+  <style>
+    :root {
+      --primary: #2367e8;
+      --primary-dark: #1f5fda;
+      --primary-light: #2a8cff;
+      --text: #333d4f;
+      --muted: #8a93a3;
+      --line: #edf0f5;
+      --header: #fbfbfc;
+      --danger: #ff5b5b;
+      --success: #21b573;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-width: 1280px;
+      min-height: 720px;
+      margin: 0;
+      background: #fff;
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 720px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+    }
+
+    .brand {
+      width: 180px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding-left: 18px;
+      gap: 10px;
+      flex-shrink: 0;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark span {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 4px 8px 4px 8px;
+      opacity: 0.95;
+    }
+
+    .brand-mark .m1 { left: 6px; top: 0; background: #43c462; transform: rotate(45deg); }
+    .brand-mark .m2 { right: 0; top: 6px; background: #33a0ff; transform: rotate(45deg); }
+    .brand-mark .m3 { left: 6px; bottom: 0; background: #ffb01e; transform: rotate(45deg); }
+    .brand-mark .m4 { left: 0; top: 6px; background: #5bd0d8; transform: rotate(45deg); }
+    .brand-mark .m5 { left: 8px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0.88; }
+
+    .top-nav {
+      height: 52px;
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .nav-item {
+      min-width: 90px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eef4ff;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+      padding: 0 16px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-item.active {
+      width: 92px;
+      color: var(--primary);
+      background: #fff;
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+      margin-right: 6px;
+    }
+
+    .nav-item.dimmed {
+      opacity: 0.55;
+    }
+
+    .top-actions {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-right: 12px;
+      flex: 0 0 auto;
+    }
+
+    .search-box {
+      width: 164px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 5px;
+      padding: 0 10px;
+      color: #aab3c1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-box input {
+      width: 128px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #657083;
+    }
+
+    .search-icon {
+      width: 14px;
+      height: 14px;
+      margin-left: auto;
+      position: relative;
+    }
+
+    .search-icon::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #b6bfcd;
+      border-radius: 50%;
+      left: 0;
+      top: 0;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      background: #b6bfcd;
+      transform: rotate(45deg);
+      left: 8px;
+      top: 10px;
+      border-radius: 1px;
+    }
+
+    .top-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.95;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .icon-calendar::before {
+      content: "";
+      position: absolute;
+      inset: 2px 3px 2px 3px;
+      border: 2px solid #fff;
+      border-radius: 2px;
+    }
+
+(This file is the same as your workspace `index.html` — copied into `deploy/index.html`)
