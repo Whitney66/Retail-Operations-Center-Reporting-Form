@@ -207,4 +207,1986 @@
       border-radius: 2px;
     }
 
-(This file is the same as your workspace `index.html` — copied into `deploy/index.html`)
+    .icon-calendar::after {
+      content: "";
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      top: 7px;
+      height: 2px;
+      background: #fff;
+    }
+
+    .icon-bell::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 10px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-bottom: 0;
+      border-radius: 9px 9px 3px 3px;
+    }
+
+    .icon-bell::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      bottom: 1px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .icon-full::before,
+    .icon-full::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-color: #fff;
+      border-style: solid;
+    }
+
+    .icon-full::before {
+      left: 0;
+      top: 0;
+      border-width: 2px 0 0 2px;
+      box-shadow: 10px 0 0 -1px transparent;
+    }
+
+    .icon-full::after {
+      right: 0;
+      bottom: 0;
+      border-width: 0 2px 2px 0;
+    }
+
+    .cdf {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fff;
+      color: #f9a11d;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+    }
+
+    .secondary-strip {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-bottom: 1px solid #dcdfe6;
+      padding-left: 10px;
+    }
+
+    .report-pill {
+      min-width: 134px;
+      height: 24px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #1d86f2;
+      border-radius: 4px;
+      font-weight: 700;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .content {
+      padding: 16px 10px 0 10px;
+    }
+
+    .filters {
+      height: 39px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      height: 24px;
+      white-space: nowrap;
+    }
+
+    .filter-group label {
+      height: 24px;
+      line-height: 24px;
+      color: #111827;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .filter-text,
+    .filter-select {
+      height: 24px;
+      border: 1px solid #c8d0dc;
+      background: #fff;
+      color: #455064;
+      border-radius: 3px;
+      outline: none;
+      padding: 0 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .filter-text {
+      width: 148px;
+    }
+
+    .filter-text.date-input {
+      width: 184px;
+      height: 32px;
+      padding-right: 34px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filter-select.type {
+      width: 126px;
+    }
+
+    .filter-select.store {
+      width: 248px;
+    }
+
+    .multi-select {
+      position: relative;
+      width: 248px;
+      height: 24px;
+    }
+
+    .multi-select-trigger {
+      width: 100%;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #c8d0dc;
+      border-radius: 3px;
+      background: #fff;
+      color: #455064;
+      padding: 0 7px 0 8px;
+      text-align: left;
+    }
+
+    .multi-select-trigger::after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #8a93a3;
+      margin-left: 8px;
+    }
+
+    .multi-select.open .multi-select-trigger {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .multi-select-menu {
+      position: absolute;
+      top: 27px;
+      left: 0;
+      z-index: 30;
+      display: none;
+      width: 100%;
+      padding: 6px 0;
+      border: 1px solid #cfd6e2;
+      border-radius: 3px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+    }
+
+    .multi-select.open .multi-select-menu {
+      display: block;
+    }
+
+    .multi-option {
+      display: flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      color: #455064;
+      cursor: pointer;
+    }
+
+    .multi-option:hover {
+      background: #f5f8ff;
+    }
+
+    .multi-option input {
+      margin: 0 6px 0 0;
+    }
+
+    .filter-text:focus,
+    .filter-select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .date-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .calendar-btn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #111827;
+      border-radius: 1px;
+      background:
+        linear-gradient(#111827, #111827) 0 4px / 12px 1px no-repeat,
+        linear-gradient(#111827, #111827) 3px 0 / 1px 4px no-repeat,
+        linear-gradient(#111827, #111827) 9px 0 / 1px 4px no-repeat,
+        #fff;
+      padding: 0;
+    }
+
+    .calendar-popover {
+      position: fixed;
+      z-index: 70;
+      display: none;
+      width: 318px;
+      padding: 16px 16px 12px;
+      border: 1px solid #d5dbe6;
+      border-radius: 2px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+    }
+
+    .calendar-popover.show {
+      display: block;
+    }
+
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 30px;
+      margin-bottom: 12px;
+    }
+
+    .calendar-title {
+      border: 0;
+      background: transparent;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .calendar-title::after {
+      content: "";
+      display: inline-block;
+      margin-left: 5px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #111827;
+      vertical-align: middle;
+    }
+
+    .calendar-nav {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      background: transparent;
+      color: #111827;
+      font-size: 26px;
+      line-height: 28px;
+    }
+
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .month-option {
+      height: 34px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: #fff;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    .month-option:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .month-option.selected {
+      border-color: #0d72e8;
+      background: #0d72e8;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .calendar-footer {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 12px;
+    }
+
+    .calendar-link {
+      border: 0;
+      background: transparent;
+      color: #1677ff;
+      font-size: 14px;
+      padding: 0;
+    }
+
+    .spacer-wide {
+      width: 60px;
+    }
+
+    .query-actions {
+      display: flex;
+      gap: 10px;
+      margin-left: 0;
+    }
+
+    .btn {
+      height: 24px;
+      min-width: 54px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      padding: 0 16px;
+      line-height: 22px;
+      font-weight: 700;
+      background: #fff;
+      color: #3b4657;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-default {
+      border-color: #aeb7c6;
+      color: #283346;
+    }
+
+    .btn-default:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-danger-ghost {
+      border-color: #ff9b9b;
+      color: #e13c3c;
+      background: #fff;
+    }
+
+    .btn-danger-ghost:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: #fff7f7;
+    }
+
+    .actions-row {
+      height: 34px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding-top: 0;
+    }
+
+    .actions-row .btn {
+      height: 24px;
+      min-width: 67px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: hidden;
+      border-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #646f80;
+      font-size: 12px;
+    }
+
+    thead tr:first-child th {
+      height: 30px;
+      background: var(--header);
+      color: #263142;
+      font-weight: 700;
+      border-bottom: 0;
+      text-align: center;
+    }
+
+    thead tr:nth-child(2) th {
+      height: 30px;
+      background: #fff;
+      color: #263142;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      text-align: center;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 0 8px;
+      height: 31px;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      background: #fff;
+      transition: background 0.12s;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    tbody tr.selected {
+      background: #eef6ff;
+      box-shadow: inset 3px 0 0 var(--primary-light);
+    }
+
+    .col-index { width: 46px; }
+    .col-type { width: 70px; }
+    .col-date { width: 88px; }
+    .col-channel { width: 120px; }
+    .col-code { width: 78px; }
+    .col-name { width: 170px; }
+    .col-small { width: 86px; }
+    .col-operator { width: 82px; }
+    .col-time { width: 142px; }
+    .col-op { width: 78px; }
+
+    .td-name {
+      text-align: left;
+    }
+
+    .row-input,
+    .row-select {
+      width: 100%;
+      height: 22px;
+      border: 1px solid #d6dce6;
+      border-radius: 2px;
+      outline: none;
+      text-align: center;
+      color: #4d596b;
+      padding: 0 4px;
+      background: #fff;
+    }
+
+    .row-input.name-input {
+      text-align: left;
+    }
+
+    .row-input::placeholder {
+      color: #a5afbd;
+    }
+
+    .row-input:focus,
+    .row-select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .operation {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .link-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: #1890ff;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .link-btn:hover {
+      color: #0a63cb;
+      text-decoration: underline;
+    }
+
+    .empty-row td {
+      height: 76px;
+      color: #9aa4b3;
+    }
+
+    .hidden-file {
+      display: none;
+    }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.32);
+    }
+
+    .modal-mask.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 722px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid #edf0f5;
+      color: #253044;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      border: 0;
+      background: transparent;
+      color: #8792a3;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .modal-close:hover {
+      color: #283346;
+    }
+
+    .modal-body {
+      padding: 18px 22px 4px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 26px;
+      row-gap: 12px;
+    }
+
+    .form-item {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+    }
+
+    .form-item label {
+      width: 112px;
+      color: #374151;
+      font-weight: 600;
+      text-align: right;
+      padding-right: 10px;
+      flex: 0 0 auto;
+    }
+
+    .form-item input,
+    .form-item select {
+      width: 196px;
+      height: 28px;
+      border: 1px solid #cfd6e2;
+      border-radius: 3px;
+      outline: none;
+      padding: 0 8px;
+      color: #455064;
+      background: #fff;
+    }
+
+    .form-item input:focus,
+    .form-item select:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 140, 255, 0.08);
+    }
+
+    .form-item.full {
+      grid-column: 1 / span 2;
+    }
+
+    .form-item.full input {
+      width: 530px;
+    }
+
+    .import-modal {
+      width: 760px;
+    }
+
+    .upload-panel {
+      min-height: 238px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #cfd6e2;
+      border-radius: 8px;
+      background: #fbfcff;
+      color: #526174;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .upload-panel:hover,
+    .upload-panel.dragover {
+      border-color: var(--primary-light);
+      background: #f4f8ff;
+    }
+
+    .upload-icon {
+      width: 78px;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      border-radius: 50%;
+      background: #e6eaf0;
+      color: #9aa4b3;
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .upload-title {
+      color: #526174;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .upload-link {
+      color: #2f7df6;
+      font-weight: 700;
+    }
+
+    .upload-tips {
+      margin-top: 18px;
+      color: #64748b;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .template-link {
+      border: 0;
+      background: transparent;
+      color: #2f7df6;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0;
+    }
+
+    .preview-block {
+      display: none;
+      margin-top: 16px;
+      border: 1px solid #edf0f5;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .preview-block.show {
+      display: block;
+    }
+
+    .preview-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 36px;
+      padding: 0 12px;
+      background: #fbfcfe;
+      border-bottom: 1px solid #edf0f5;
+      color: #253044;
+      font-weight: 700;
+    }
+
+    .preview-file {
+      max-width: 420px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #667085;
+      font-weight: 400;
+    }
+
+    .preview-table-wrap {
+      max-height: 145px;
+      overflow: auto;
+      background: #fff;
+    }
+
+    .preview-table {
+      min-width: 920px;
+      font-size: 12px;
+    }
+
+    .preview-table th,
+    .preview-table td {
+      height: 28px;
+      padding: 0 8px;
+    }
+
+    .required::before {
+      content: "*";
+      color: var(--danger);
+      margin-right: 3px;
+    }
+
+    .modal-footer {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 22px;
+      border-top: 1px solid #edf0f5;
+      background: #fbfcfe;
+    }
+
+    .confirm {
+      width: 380px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .confirm-body {
+      padding: 28px 30px 18px;
+      color: #2f3a4c;
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    .confirm-title {
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .confirm-footer {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 18px;
+      background: #fbfcfe;
+      border-top: 1px solid #edf0f5;
+    }
+
+    .toast {
+      position: fixed;
+      top: 82px;
+      left: 50%;
+      z-index: 60;
+      min-width: 176px;
+      max-width: 420px;
+      display: none;
+      transform: translateX(-50%);
+      background: rgba(37, 48, 68, 0.95);
+      color: #fff;
+      border-radius: 4px;
+      padding: 9px 14px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .toast.show {
+      display: block;
+      animation: toast-in 0.18s ease-out;
+    }
+
+    @keyframes toast-in {
+      from { opacity: 0; transform: translate(-50%, -8px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><span class="m1"></span><span class="m2"></span><span class="m3"></span><span class="m4"></span><span class="m5"></span></span>
+        <span>大数据平台</span>
+      </div>
+      <nav class="top-nav" aria-label="主导航">
+        <a class="nav-item" href="javascript:void(0)">系统管理</a>
+        <a class="nav-item active" href="javascript:void(0)">经营看板</a>
+        <a class="nav-item" href="javascript:void(0)">销售分析</a>
+        <a class="nav-item" href="javascript:void(0)">进销存分析</a>
+        <a class="nav-item" href="javascript:void(0)">库存分析</a>
+        <a class="nav-item" href="javascript:void(0)">顾客分析</a>
+        <a class="nav-item" href="javascript:void(0)">采购分析</a>
+        <a class="nav-item dimmed" href="javascript:void(0)">提货分析</a>
+      </nav>
+      <div class="top-actions">
+        <div class="search-box">
+          <input type="text" placeholder="搜索" aria-label="搜索">
+          <span class="search-icon" aria-hidden="true"></span>
+        </div>
+        <span class="top-icon icon-calendar" aria-hidden="true"></span>
+        <span class="top-icon icon-bell" aria-hidden="true"></span>
+        <span class="top-icon icon-full" aria-hidden="true"></span>
+        <span class="cdf">cdf</span>
+      </div>
+    </header>
+
+    <div class="secondary-strip">
+      <div class="report-pill">零售运营中心利润表</div>
+    </div>
+
+    <main class="content">
+      <section class="filters" aria-label="查询条件">
+        <div class="filter-group">
+          <label for="dateType">日期类型：</label>
+          <select id="dateType" class="filter-select type">
+            <option value="">全部</option>
+            <option value="年">年</option>
+            <option value="月">月</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="startDate">日期：</label>
+          <span class="date-wrap"><input id="startDate" class="filter-text date-input" type="text" placeholder="选择年月" readonly><button class="calendar-btn" type="button" data-picker="startDate" aria-label="选择开始日期"></button></span>
+        </div>
+        <div class="filter-group">
+          <label for="endDate">至</label>
+          <span class="date-wrap"><input id="endDate" class="filter-text date-input" type="text" placeholder="选择年月" readonly><button class="calendar-btn" type="button" data-picker="endDate" aria-label="选择结束日期"></button></span>
+        </div>
+          <div class="filter-group">
+            <label for="channelTrigger">渠道：</label>
+            <div class="multi-select" id="channelFilter">
+              <button class="multi-select-trigger" type="button" id="channelTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
+              <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+                <label class="multi-option"><input type="checkbox" value="海南区域" checked>海南区域</label>
+                <label class="multi-option"><input type="checkbox" value="出入境口岸" checked>出入境口岸</label>
+                <label class="multi-option"><input type="checkbox" value="海外零售" checked>海外零售</label>
+                <label class="multi-option"><input type="checkbox" value="中免商贸" checked>中免商贸</label>
+                <label class="multi-option"><input type="checkbox" value="市内店" checked>市内店</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label for="storeTrigger">门店：</label>
+            <div class="multi-select" id="storeFilter">
+              <button class="multi-select-trigger" type="button" id="storeTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
+              <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+                <label class="multi-option"><input type="checkbox" value="6826" checked>6826 广州新免免税品有限公司</label>
+              </div>
+            </div>
+          </div>
+        <div class="spacer-wide"></div>
+        <div class="query-actions">
+          <button class="btn btn-primary" type="button" id="queryBtn">查询</button>
+          <button class="btn btn-default" type="button" id="resetBtn">重置</button>
+        </div>
+      </section>
+
+      <section class="actions-row" aria-label="表格操作">
+        <button class="btn btn-primary" type="button" id="importBtn">导入</button>
+        <button class="btn btn-primary" type="button" id="addBtn">+ 新增</button>
+        <button class="btn btn-danger-ghost" type="button" id="batchDeleteBtn">批量删除</button>
+      </section>
+
+      <section class="table-wrap">
+        <table aria-label="零售运营中心利润表">
+          <thead>
+            <tr>
+              <th class="col-index" rowspan="2">序号</th>
+              <th class="col-type" rowspan="2">日期类型</th>
+              <th class="col-date" rowspan="2">日期</th>
+              <th class="col-channel" rowspan="2">渠道</th>
+              <th class="col-code" rowspan="2">门店编码</th>
+              <th class="col-name" rowspan="2">门店名称</th>
+              <th colspan="2">营业收入（亿元）</th>
+              <th colspan="2">线下收入（亿元）</th>
+              <th colspan="2">客流人数（万人次）</th>
+              <th colspan="2">离岛客流（万人次）</th>
+              <th class="col-manage-area" rowspan="2">经营面积（平方米）</th>
+              <th class="col-area-efficiency" rowspan="2">坪效（元/平方米）</th>
+              <th class="col-staff-count" rowspan="2">营业人员（人）</th>
+              <th class="col-labor-efficiency" rowspan="2">劳效（元/人）</th>
+              <th class="col-operator" rowspan="2">操作人</th>
+              <th class="col-time" rowspan="2">操作时间</th>
+              <th class="col-op" rowspan="2">操作</th>
+            </tr>
+            <tr>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+              <th class="col-small">目标数据</th>
+              <th class="col-small">实际完成</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <div class="calendar-popover" id="calendarPopover">
+    <div class="calendar-header">
+      <button class="calendar-nav" type="button" id="calendarPrev" aria-label="上一年">↑</button>
+      <button class="calendar-title" type="button" id="calendarTitle"></button>
+      <button class="calendar-nav" type="button" id="calendarNext" aria-label="下一年">↓</button>
+    </div>
+    <div class="month-grid" id="monthGrid"></div>
+    <div class="calendar-footer">
+      <button class="calendar-link" type="button" id="calendarClear">清除</button>
+      <button class="calendar-link" type="button" id="calendarToday">本月</button>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="editMask" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="modalTitle">新增</span>
+        <button class="modal-close" type="button" id="closeModal" aria-label="关闭">×</button>
+      </div>
+      <form id="recordForm">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-item">
+              <label class="required" for="formDateType">日期类型</label>
+              <select id="formDateType" name="dateType" required>
+                <option value="">请选择</option>
+                <option value="年">年</option>
+                <option value="月">月</option>
+              </select>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formDate">日期</label>
+              <input id="formDate" name="date" type="text" placeholder="例如：2026-05" required>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formChannel">渠道</label>
+              <select id="formChannel" name="channel">
+                <option value="">全部</option>
+                <option value="海南区域">海南区域</option>
+                <option value="出入境口岸">出入境口岸</option>
+                <option value="海外零售">海外零售</option>
+                <option value="中免商贸">中免商贸</option>
+                <option value="市内店">市内店</option>
+              </select>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formStoreCode">门店编码</label>
+              <input id="formStoreCode" name="storeCode" type="text" required>
+            </div>
+            <div class="form-item">
+              <label class="required" for="formStoreName">门店名称</label>
+              <input id="formStoreName" name="storeName" type="text" required>
+            </div>
+            <div class="form-item">
+              <label for="formRevenueTarget">营业收入-目标数据</label>
+              <input id="formRevenueTarget" name="revenueTarget" type="text" placeholder="请输入内容">
+            </div>
+            <div class="form-item">
+              <label for="formRevenueActual">营业收入-实际完成</label>
+              <input id="formRevenueActual" name="revenueActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOfflineTarget">线下收入-目标数据</label>
+              <input id="formOfflineTarget" name="offlineTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formOfflineActual">线下收入-实际完成</label>
+              <input id="formOfflineActual" name="offlineActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formFlowTarget">客流人数-目标数据</label>
+              <input id="formFlowTarget" name="flowTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formFlowActual">客流人数-实际完成</label>
+              <input id="formFlowActual" name="flowActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formVipFlowTarget">离岛客流-目标数据</label>
+              <input id="formVipFlowTarget" name="vipFlowTarget" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formVipFlowActual">离岛客流-实际完成</label>
+              <input id="formVipFlowActual" name="vipFlowActual" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formManageArea">经营面积（平方米）</label>
+              <input id="formManageArea" name="manageArea" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formAreaEfficiency">坪效（元/平方米）</label>
+              <input id="formAreaEfficiency" name="areaEfficiency" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formStaffCount">营业人员（人）</label>
+              <input id="formStaffCount" name="staffCount" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formLaborEfficiency">劳效（元/人）</label>
+              <input id="formLaborEfficiency" name="laborEfficiency" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" type="button" id="cancelModal">取消</button>
+          <button class="btn btn-primary" type="submit">确定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="importMask" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+    <div class="modal import-modal">
+      <div class="modal-header">
+        <span id="importTitle">导入</span>
+        <button class="modal-close" type="button" id="closeImportModal" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="upload-panel" id="uploadPanel" tabindex="0" role="button" aria-label="上传导入文件">
+          <div class="upload-icon" aria-hidden="true">⇧</div>
+          <div class="upload-title">拖文件到此处，或<span class="upload-link">点击上传</span></div>
+          <div class="upload-tips">仅允许导入 .xlsx, .xls 格式文件， <button class="template-link" type="button" id="downloadTemplateBtn">下载模板</button></div>
+          <input id="importFile" class="hidden-file" type="file" accept=".xlsx,.xls">
+        </div>
+        <div class="preview-block" id="importPreviewBlock">
+          <div class="preview-title">
+            <span>数据预览</span>
+            <span class="preview-file" id="importFileName">未选择文件</span>
+          </div>
+          <div class="preview-table-wrap">
+            <table class="preview-table" aria-label="导入数据预览">
+              <thead>
+                <tr>
+                  <th>日期类型</th>
+                  <th>日期</th>
+                  <th>渠道</th>
+                  <th>门店编码</th>
+                  <th>门店名称</th>
+                  <th>营业收入-目标</th>
+                  <th>营业收入-实际</th>
+                  <th>线下收入-目标</th>
+                  <th>线下收入-实际</th>
+                  <th>客流人数-目标</th>
+                  <th>客流人数-实际</th>
+                  <th>离岛客流-目标</th>
+                  <th>离岛客流-实际</th>
+                  <th>经营面积（平方米）</th>
+                  <th>坪效（元/平方米）</th>
+                  <th>营业人员（人）</th>
+                  <th>劳效（元/人）</th>
+                </tr>
+              </thead>
+              <tbody id="importPreviewBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" id="confirmImportBtn">确定</button>
+        <button class="btn btn-default" type="button" id="cancelImportModal">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="confirmMask" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="confirm">
+      <div class="confirm-body">
+        <div class="confirm-title" id="confirmTitle">确认删除</div>
+        <div id="confirmText">删除后不可恢复，确认继续？</div>
+      </div>
+      <div class="confirm-footer">
+        <button class="btn btn-default" type="button" id="confirmCancel">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmOk">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = 'retail_profit_statement_rows_v1';
+
+    const seedRows = [
+      {
+        id: 'row-1',
+        dateType: '年',
+        date: '2026',
+        channel: '出入境口岸',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      },
+      {
+        id: 'row-2',
+        dateType: '月',
+        date: '2026-05',
+        channel: '出入境口岸',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      },
+      {
+        id: 'row-3',
+        dateType: '月',
+        date: '2026-05',
+        channel: '出入境口岸',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
+        operator: 'wangkeke',
+        operateTime: '2023-02-13 19:02:00'
+      }
+    ];
+
+    let rows = loadRows();
+    // 批量补全缺失的 channel 字段为默认值（出入境口岸）
+    (function fillMissingChannelsDefault() {
+      const defaultChannel = '出入境口岸';
+      let changed = false;
+      rows = rows.map((r) => {
+        if (!r.channel) { changed = true; return { ...r, channel: defaultChannel }; }
+        return r;
+      });
+      if (changed) saveRows();
+    })();
+    let visibleRows = [...rows];
+    let selectedIds = new Set();
+    let editingId = null;
+    let inlineEditingId = null;
+    let importPreviewRows = [];
+    let activeDateInput = null;
+    let calendarViewDate = parseDateValue(nowDateText()) || new Date();
+    let confirmAction = null;
+
+    const tableBody = document.getElementById('tableBody');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    const dateType = document.getElementById('dateType');
+    const storeFilter = document.getElementById('storeFilter');
+    const storeTrigger = document.getElementById('storeTrigger');
+    const editMask = document.getElementById('editMask');
+    const importMask = document.getElementById('importMask');
+    const confirmMask = document.getElementById('confirmMask');
+    const recordForm = document.getElementById('recordForm');
+    const modalTitle = document.getElementById('modalTitle');
+    const uploadPanel = document.getElementById('uploadPanel');
+    const importFile = document.getElementById('importFile');
+    const importFileName = document.getElementById('importFileName');
+    const importPreviewBlock = document.getElementById('importPreviewBlock');
+    const importPreviewBody = document.getElementById('importPreviewBody');
+    const calendarPopover = document.getElementById('calendarPopover');
+    const calendarTitle = document.getElementById('calendarTitle');
+    const monthGrid = document.getElementById('monthGrid');
+    const toast = document.getElementById('toast');
+
+    updateDateInputMode();
+    updateStoreTriggerText();
+    updateChannelTriggerText();
+    renderTable();
+
+    document.getElementById('queryBtn').addEventListener('click', handleQuery);
+    document.getElementById('resetBtn').addEventListener('click', handleReset);
+    startDate.addEventListener('click', () => openCalendar(startDate));
+    endDate.addEventListener('click', () => openCalendar(endDate));
+    document.querySelectorAll('.calendar-btn').forEach((button) => {
+      button.addEventListener('click', () => openCalendar(document.getElementById(button.dataset.picker)));
+    });
+    document.getElementById('calendarPrev').addEventListener('click', () => shiftCalendarYear(-1));
+    document.getElementById('calendarNext').addEventListener('click', () => shiftCalendarYear(1));
+    calendarTitle.addEventListener('click', selectCalendarYear);
+    document.getElementById('calendarClear').addEventListener('click', clearCalendarSelection);
+    document.getElementById('calendarToday').addEventListener('click', selectToday);
+    dateType.addEventListener('change', handleDateTypeChange);
+    storeTrigger.addEventListener('click', toggleStoreFilter);
+    const channelFilter = document.getElementById('channelFilter');
+    const channelTrigger = document.getElementById('channelTrigger');
+    channelTrigger.addEventListener('click', toggleChannelFilter);
+    channelFilter.addEventListener('change', updateChannelTriggerText);
+    storeFilter.addEventListener('change', updateStoreTriggerText);
+    document.addEventListener('click', closeFloatingControlsOnOutsideClick);
+    document.getElementById('addBtn').addEventListener('click', () => openModal());
+    document.getElementById('batchDeleteBtn').addEventListener('click', handleBatchDelete);
+    document.getElementById('importBtn').addEventListener('click', openImportModal);
+    document.getElementById('downloadTemplateBtn').addEventListener('click', downloadTemplate);
+    uploadPanel.addEventListener('click', handleUploadPanelClick);
+    uploadPanel.addEventListener('keydown', handleUploadPanelKeydown);
+    uploadPanel.addEventListener('dragover', handleUploadDragOver);
+    uploadPanel.addEventListener('dragleave', handleUploadDragLeave);
+    uploadPanel.addEventListener('drop', handleUploadDrop);
+    document.getElementById('confirmImportBtn').addEventListener('click', handleImport);
+    importFile.addEventListener('change', handleImportFileChange);
+    document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
+    document.getElementById('cancelImportModal').addEventListener('click', closeImportModal);
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('cancelModal').addEventListener('click', closeModal);
+    document.getElementById('confirmCancel').addEventListener('click', closeConfirm);
+    document.getElementById('confirmOk').addEventListener('click', () => {
+      if (typeof confirmAction === 'function') confirmAction();
+      closeConfirm();
+    });
+
+    editMask.addEventListener('click', (event) => {
+      if (event.target === editMask) closeModal();
+    });
+
+    importMask.addEventListener('click', (event) => {
+      if (event.target === importMask) closeImportModal();
+    });
+
+    confirmMask.addEventListener('click', (event) => {
+      if (event.target === confirmMask) closeConfirm();
+    });
+
+    recordForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(recordForm);
+      const data = Object.fromEntries(formData.entries());
+
+      if (!data.channel) {
+        showToast('请填写渠道');
+        return;
+      }
+
+      const record = normalizeRecord(data);
+
+      if (editingId) {
+        rows = rows.map((item) => item.id === editingId ? { ...record, id: editingId } : item);
+        showToast('编辑成功');
+      } else {
+        rows.unshift({ ...record, id: createId() });
+        showToast('新增成功');
+      }
+
+      saveRows();
+      selectedIds.clear();
+      updateDateInputMode();
+      applyCurrentFilters();
+      closeModal();
+    });
+
+    tableBody.addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-action="edit"]');
+      const saveButton = event.target.closest('[data-action="save"]');
+      const cancelButton = event.target.closest('[data-action="cancel-edit"]');
+      const deleteButton = event.target.closest('[data-action="delete"]');
+      const rowField = event.target.closest('[data-field]');
+
+      if (editButton) {
+        inlineEditingId = editButton.dataset.id;
+        selectedIds.delete(inlineEditingId);
+        renderTable();
+        return;
+      }
+
+      if (saveButton) {
+        saveInlineEdit(saveButton.dataset.id);
+        return;
+      }
+
+      if (cancelButton) {
+        inlineEditingId = null;
+        renderTable();
+        return;
+      }
+
+      if (deleteButton) {
+        const id = deleteButton.dataset.id;
+        openConfirm('确认删除', '删除后不可恢复，确认继续？', () => {
+          rows = rows.filter((item) => item.id !== id);
+          selectedIds.delete(id);
+          saveRows();
+          updateDateInputMode();
+          applyCurrentFilters();
+          showToast('删除成功');
+        });
+        return;
+      }
+
+      if (rowField) return;
+
+      const tr = event.target.closest('tr[data-id]');
+      if (!tr) return;
+      const id = tr.dataset.id;
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+      } else {
+        selectedIds.add(id);
+      }
+      renderTable();
+    });
+
+    tableBody.addEventListener('dblclick', (event) => {
+      if (event.target.closest('button') || event.target.closest('input') || event.target.closest('select')) return;
+      const tr = event.target.closest('tr[data-id]');
+      if (!tr) return;
+      inlineEditingId = tr.dataset.id;
+      selectedIds.delete(inlineEditingId);
+      renderTable();
+    });
+
+    function loadRows() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : seedRows.map((item) => ({ ...item }));
+      } catch (error) {
+        return seedRows.map((item) => ({ ...item }));
+      }
+    }
+
+    function saveRows() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
+    }
+
+    function renderTable() {
+      if (!visibleRows.length) {
+        tableBody.innerHTML = '<tr class="empty-row"><td colspan="21">暂无数据</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = visibleRows.map((row, index) => {
+        const selected = selectedIds.has(row.id) ? ' selected' : '';
+        const isEditing = row.id === inlineEditingId;
+
+        return `
+          <tr class="${selected}" data-id="${row.id}" title="单击选择，双击编辑">
+            <td>${index + 1}</td>
+            ${renderCell(row, 'dateType', isEditing, 'select')}
+            ${renderCell(row, 'date', isEditing)}
+            ${renderCell(row, 'channel', isEditing)}
+            ${renderCell(row, 'storeCode', isEditing)}
+            ${renderCell(row, 'storeName', isEditing, 'text', 'td-name')}
+            ${renderCell(row, 'revenueTarget', isEditing)}
+            ${renderCell(row, 'revenueActual', isEditing)}
+            ${renderCell(row, 'offlineTarget', isEditing)}
+            ${renderCell(row, 'offlineActual', isEditing)}
+            ${renderCell(row, 'flowTarget', isEditing)}
+            ${renderCell(row, 'flowActual', isEditing)}
+            ${renderCell(row, 'vipFlowTarget', isEditing)}
+            ${renderCell(row, 'vipFlowActual', isEditing)}
+            ${renderCell(row, 'manageArea', isEditing)}
+            ${renderCell(row, 'areaEfficiency', isEditing)}
+            ${renderCell(row, 'staffCount', isEditing)}
+            ${renderCell(row, 'laborEfficiency', isEditing)}
+            ${renderCell(row, 'operator', isEditing)}
+            ${renderCell(row, 'operateTime', isEditing)}
+            <td>
+              <span class="operation">
+                ${isEditing
+                  ? `<button class="link-btn" type="button" data-action="save" data-id="${row.id}">保存</button><button class="link-btn" type="button" data-action="cancel-edit" data-id="${row.id}">取消</button>`
+                  : `<button class="link-btn" type="button" data-action="edit" data-id="${row.id}">编辑</button><button class="link-btn" type="button" data-action="delete" data-id="${row.id}">删除</button>`}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderCell(row, field, isEditing, type = 'text', className = '') {
+      const classAttr = className ? ` class="${className}"` : '';
+      const value = row[field] || '';
+
+      if (!isEditing) {
+        return `<td${classAttr}>${escapeHtml(value)}</td>`;
+      }
+
+      if (type === 'select') {
+        return `
+          <td${classAttr}>
+            <select class="row-select" data-field="${field}">
+              <option value="年" ${value === '年' ? 'selected' : ''}>年</option>
+              <option value="月" ${value === '月' ? 'selected' : ''}>月</option>
+            </select>
+          </td>
+        `;
+      }
+
+      const inputClass = field === 'storeName' ? 'row-input name-input' : 'row-input';
+      return `<td${classAttr}><input class="${inputClass}" data-field="${field}" type="text" value="${escapeAttribute(value)}"></td>`;
+    }
+
+    function saveInlineEdit(id) {
+      const tr = tableBody.querySelector(`tr[data-id="${id}"]`);
+      if (!tr) return;
+
+      const updated = { ...rows.find((item) => item.id === id) };
+      tr.querySelectorAll('[data-field]').forEach((fieldEl) => {
+        updated[fieldEl.dataset.field] = fieldEl.value;
+      });
+      updated.operateTime = nowText();
+
+      rows = rows.map((item) => item.id === id ? updated : item);
+      inlineEditingId = null;
+      saveRows();
+      updateDateInputMode();
+      applyCurrentFilters();
+      showToast('保存成功');
+    }
+
+    function handleQuery() {
+      selectedIds.clear();
+      inlineEditingId = null;
+      applyCurrentFilters();
+      showToast(`查询完成，共 ${visibleRows.length} 条数据`);
+    }
+
+    function handleReset() {
+      dateType.value = '';
+      startDate.value = '';
+      endDate.value = '';
+      storeFilter.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+      const channelFilterEl = document.getElementById('channelFilter');
+      channelFilterEl.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+      updateDateInputMode();
+      updateStoreTriggerText();
+      updateChannelTriggerText();
+      selectedIds.clear();
+      inlineEditingId = null;
+      visibleRows = [...rows];
+      renderTable();
+      showToast('已重置');
+    }
+
+    function applyCurrentFilters() {
+      const start = startDate.value.trim();
+      const end = endDate.value.trim();
+      const type = dateType.value;
+      const selectedStores = getSelectedStores();
+      const selectedChannels = getSelectedChannels();
+
+      visibleRows = rows.filter((row) => {
+        const typeMatch = !type || row.dateType === type;
+        const storeMatch = !selectedStores.length || selectedStores.includes(row.storeCode);
+        const channelMatch = !selectedChannels.length || selectedChannels.includes(row.channel);
+        const startMatch = !start || compareDateByType(row.date, start, type) >= 0;
+        const endMatch = !end || compareDateByType(row.date, end, type) <= 0;
+        return typeMatch && storeMatch && channelMatch && startMatch && endMatch;
+      });
+
+      renderTable();
+    }
+
+    function handleDateTypeChange() {
+      startDate.value = '';
+      endDate.value = '';
+      updateDateInputMode();
+      closeCalendar();
+    }
+
+    function updateDateInputMode() {
+      const placeholder = dateType.value === '年'
+        ? '选择年份'
+        : '选择年月';
+      startDate.placeholder = placeholder;
+      endDate.placeholder = placeholder;
+    }
+
+    function openCalendar(input) {
+      activeDateInput = input;
+      storeFilter.classList.remove('open');
+      storeTrigger.setAttribute('aria-expanded', 'false');
+      const current = parseDateValue(input.value) || parseDateValue(nowDateText()) || new Date();
+      calendarViewDate = new Date(current.getFullYear(), current.getMonth(), 1);
+      renderCalendar();
+      const rect = input.parentElement.getBoundingClientRect();
+      calendarPopover.style.left = `${rect.left}px`;
+      calendarPopover.style.top = `${rect.bottom + 4}px`;
+      calendarPopover.classList.add('show');
+    }
+
+    function closeCalendar() {
+      calendarPopover.classList.remove('show');
+      activeDateInput = null;
+    }
+
+    function shiftCalendarYear(offset) {
+      calendarViewDate = new Date(calendarViewDate.getFullYear() + offset, calendarViewDate.getMonth(), 1);
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const year = calendarViewDate.getFullYear();
+      const selected = activeDateInput ? parseDateValue(activeDateInput.value) : null;
+      calendarTitle.textContent = `${year}年`;
+      monthGrid.innerHTML = Array.from({ length: 12 }, (_, index) => {
+        const month = index + 1;
+        const value = `${year}-${String(month).padStart(2, '0')}`;
+        const classes = ['month-option'];
+        if (selected && selected.getFullYear() === year && selected.getMonth() === index) classes.push('selected');
+        return `<button class="${classes.join(' ')}" type="button" data-month="${value}">${month}月</button>`;
+      }).join('');
+      monthGrid.querySelectorAll('[data-month]').forEach((button) => {
+        button.addEventListener('click', () => selectCalendarMonth(button.dataset.month));
+      });
+    }
+
+    function selectCalendarYear() {
+      if (!activeDateInput || dateType.value !== '年') return;
+      activeDateInput.value = String(calendarViewDate.getFullYear());
+      closeCalendar();
+    }
+
+    function selectCalendarMonth(value) {
+      if (!activeDateInput) return;
+      activeDateInput.value = dateType.value === '年' ? value.slice(0, 4) : value;
+      closeCalendar();
+    }
+
+    function clearCalendarSelection() {
+      if (activeDateInput) activeDateInput.value = '';
+      closeCalendar();
+    }
+
+    function selectToday() {
+      const today = new Date();
+      selectCalendarMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
+    }
+
+    function formatDateValue(date) {
+      const pad = (num) => String(num).padStart(2, '0');
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function parseDateValue(value) {
+      const digits = String(value || '').replace(/[^0-9]/g, '');
+      if (digits.length >= 8) return new Date(Number(digits.slice(0, 4)), Number(digits.slice(4, 6)) - 1, Number(digits.slice(6, 8)));
+      if (digits.length >= 6) return new Date(Number(digits.slice(0, 4)), Number(digits.slice(4, 6)) - 1, 1);
+      if (digits.length >= 4) return new Date(Number(digits.slice(0, 4)), 0, 1);
+      return null;
+    }
+
+    function nowDateText() {
+      return formatDateValue(new Date());
+    }
+
+    function toggleStoreFilter(event) {
+      event.stopPropagation();
+      closeCalendar();
+      const isOpen = storeFilter.classList.toggle('open');
+      storeTrigger.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    function toggleChannelFilter(event) {
+      event.stopPropagation();
+      closeCalendar();
+      const channelFilterEl = document.getElementById('channelFilter');
+      const isOpen = channelFilterEl.classList.toggle('open');
+      document.getElementById('channelTrigger').setAttribute('aria-expanded', String(isOpen));
+    }
+
+    function closeFloatingControlsOnOutsideClick(event) {
+      if (!storeFilter.contains(event.target)) {
+        storeFilter.classList.remove('open');
+        storeTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      const channelFilterEl = document.getElementById('channelFilter');
+      if (channelFilterEl && !channelFilterEl.contains(event.target)) {
+        channelFilterEl.classList.remove('open');
+        const ch = document.getElementById('channelTrigger');
+        if (ch) ch.setAttribute('aria-expanded', 'false');
+      }
+
+      if (!calendarPopover.contains(event.target) && !event.target.closest('.date-wrap')) {
+        closeCalendar();
+      }
+    }
+
+    function getSelectedStores() {
+      return Array.from(storeFilter.querySelectorAll('input[type="checkbox"]:checked')).map((checkbox) => checkbox.value);
+    }
+
+    function getSelectedChannels() {
+      const channelFilterEl = document.getElementById('channelFilter');
+      return Array.from(channelFilterEl.querySelectorAll('input[type="checkbox"]:checked')).map((checkbox) => checkbox.value);
+    }
+
+    function updateStoreTriggerText() {
+      const checked = Array.from(storeFilter.querySelectorAll('input[type="checkbox"]:checked'));
+      const total = storeFilter.querySelectorAll('input[type="checkbox"]').length;
+
+      if (!checked.length || checked.length === total) {
+        storeTrigger.textContent = '全部';
+        return;
+      }
+
+      storeTrigger.textContent = checked.length === 1
+        ? checked[0].parentElement.textContent.trim()
+        : `已选 ${checked.length} 项`;
+    }
+
+    function updateChannelTriggerText() {
+      const channelFilterEl = document.getElementById('channelFilter');
+      const checked = Array.from(channelFilterEl.querySelectorAll('input[type="checkbox"]:checked'));
+      const total = channelFilterEl.querySelectorAll('input[type="checkbox"]').length;
+
+      const channelTriggerEl = document.getElementById('channelTrigger');
+      if (!checked.length || checked.length === total) {
+        channelTriggerEl.textContent = '全部';
+        return;
+      }
+
+      channelTriggerEl.textContent = checked.length === 1
+        ? checked[0].parentElement.textContent.trim()
+        : `已选 ${checked.length} 项`;
+    }
+
+    function handleBatchDelete() {
+      if (!selectedIds.size) {
+        showToast('请先单击表格行选择要删除的数据');
+        return;
+      }
+
+      openConfirm('确认批量删除', `已选择 ${selectedIds.size} 条数据，删除后不可恢复，确认继续？`, () => {
+        rows = rows.filter((item) => !selectedIds.has(item.id));
+        selectedIds.clear();
+        saveRows();
+        updateDateInputMode();
+        applyCurrentFilters();
+        showToast('批量删除成功');
+      });
+    }
+
+    function openImportModal() {
+      resetImportPreview();
+      importMask.classList.add('show');
+    }
+
+    function closeImportModal() {
+      importMask.classList.remove('show');
+      resetImportPreview();
+    }
+
+    function resetImportPreview() {
+      importPreviewRows = [];
+      importFile.value = '';
+      importFileName.textContent = '未选择文件';
+      importPreviewBody.innerHTML = '';
+      importPreviewBlock.classList.remove('show');
+      uploadPanel.classList.remove('dragover');
+    }
+
+    function handleUploadPanelClick(event) {
+      if (event.target.closest('#downloadTemplateBtn')) return;
+      importFile.click();
+    }
+
+    function handleUploadPanelKeydown(event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      importFile.click();
+    }
+
+    function handleUploadDragOver(event) {
+      event.preventDefault();
+      uploadPanel.classList.add('dragover');
+    }
+
+    function handleUploadDragLeave() {
+      uploadPanel.classList.remove('dragover');
+    }
+
+    function handleUploadDrop(event) {
+      event.preventDefault();
+      uploadPanel.classList.remove('dragover');
+      previewImportFile(event.dataTransfer.files[0]);
+    }
+
+    function handleImportFileChange() {
+      previewImportFile(importFile.files[0]);
+    }
+
+    function previewImportFile(file) {
+      if (!file) return;
+      if (!/\.(xlsx|xls)$/i.test(file.name)) {
+        showToast('仅允许导入 .xlsx、.xls 格式文件');
+        return;
+      }
+
+      importPreviewRows = [createImportPreviewRecord(file.name)];
+      importFileName.textContent = file.name;
+      renderImportPreview();
+      importPreviewBlock.classList.add('show');
+      showToast('文件已选择，请预览后点击确定');
+    }
+
+    function renderImportPreview() {
+      importPreviewBody.innerHTML = importPreviewRows.map((row) => `
+        <tr>
+          <td>${escapeHtml(row.dateType)}</td>
+          <td>${escapeHtml(row.date)}</td>
+          <td>${escapeHtml(row.channel)}</td>
+          <td>${escapeHtml(row.storeCode)}</td>
+          <td>${escapeHtml(row.storeName)}</td>
+          <td>${escapeHtml(row.revenueTarget)}</td>
+          <td>${escapeHtml(row.revenueActual)}</td>
+          <td>${escapeHtml(row.offlineTarget)}</td>
+          <td>${escapeHtml(row.offlineActual)}</td>
+          <td>${escapeHtml(row.flowTarget)}</td>
+          <td>${escapeHtml(row.flowActual)}</td>
+          <td>${escapeHtml(row.vipFlowTarget)}</td>
+          <td>${escapeHtml(row.vipFlowActual)}</td>
+          <td>${escapeHtml(row.manageArea)}</td>
+          <td>${escapeHtml(row.areaEfficiency)}</td>
+          <td>${escapeHtml(row.staffCount)}</td>
+          <td>${escapeHtml(row.laborEfficiency)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function createImportPreviewRecord(fileName) {
+      return {
+        id: createId(),
+        dateType: '月',
+        date: '2026-05',
+        channel: '海南区域',
+        storeCode: '6826',
+        storeName: '广州新免免税品有限公司',
+        revenueTarget: '14,575.25',
+        revenueActual: 'xxxx.xx',
+        offlineTarget: '9865.11',
+        offlineActual: 'xxxx.xx',
+        flowTarget: 'xxxx.xx',
+        flowActual: 'xxxx.xx',
+        vipFlowTarget: 'xxxx.xx',
+        vipFlowActual: 'xxxx.xx',
+        manageArea: 'xxxx.xx',
+        areaEfficiency: 'xxxx.xx',
+        staffCount: 'xxxx.xx',
+        laborEfficiency: 'xxxx.xx',
+        operator: 'wangkeke',
+        operateTime: nowText(),
+        sourceFile: fileName
+      };
+    }
+
+    function downloadTemplate() {
+      const headers = ['日期类型','日期','渠道','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','经营面积（平方米）','坪效（元/平方米）','营业人员（人）','劳效（元/人）','操作人','操作时间'];
+      const sample = ['月','2026-05','海南区域','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()];
+      const table = `
+        <html><head><meta charset="utf-8"></head><body>
+          <table>
+            <tr>${headers.map((item) => `<th>${escapeHtml(item)}</th>`).join('')}</tr>
+            <tr>${sample.map((item) => `<td>${escapeHtml(item)}</td>`).join('')}</tr>
+          </table>
+        </body></html>`;
+      const blob = new Blob([table], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = '零售运营中心利润表导入模板.xls';
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast('模板下载成功');
+    }
+
+    function handleImport() {
+      if (!importPreviewRows.length) {
+        showToast('请先上传文件并预览数据');
+        return;
+      }
+
+      rows = [...importPreviewRows.map(({ sourceFile, ...row }) => row), ...rows];
+      inlineEditingId = null;
+      saveRows();
+      updateDateInputMode();
+      applyCurrentFilters();
+      closeImportModal();
+      showToast('导入成功');
+    }
+
+    function openModal(record) {
+      editingId = record ? record.id : null;
+      modalTitle.textContent = record ? '编辑' : '新增';
+      recordForm.reset();
+
+      const values = record || {
+        dateType: '',
+        date: '',
+        channel: '',
+        storeCode: '',
+        storeName: '',
+        revenueTarget: '',
+        revenueActual: '',
+        offlineTarget: '',
+        offlineActual: '',
+        flowTarget: '',
+        flowActual: '',
+        vipFlowTarget: '',
+        vipFlowActual: '',
+        operator: '',
+        operateTime: ''
+      };
+
+      for (const [key, value] of Object.entries(values)) {
+        if (recordForm.elements[key]) {
+          recordForm.elements[key].value = value || '';
+        }
+      }
+
+      editMask.classList.add('show');
+      setTimeout(() => document.getElementById('formDateType').focus(), 0);
+    }
+
+    function closeModal() {
+      editMask.classList.remove('show');
+      editingId = null;
+    }
+
+    function openConfirm(title, text, action) {
+      document.getElementById('confirmTitle').textContent = title;
+      document.getElementById('confirmText').textContent = text;
+      confirmAction = action;
+      confirmMask.classList.add('show');
+    }
+
+    function closeConfirm() {
+      confirmMask.classList.remove('show');
+      confirmAction = null;
+    }
+
+    function normalizeRecord(data) {
+      return {
+        dateType: data.dateType || '月',
+        date: data.date || '',
+        channel: data.channel || '',
+        storeCode: data.storeCode || '',
+        storeName: data.storeName || '',
+        revenueTarget: data.revenueTarget || '',
+        revenueActual: data.revenueActual || '',
+        offlineTarget: data.offlineTarget || '',
+        offlineActual: data.offlineActual || '',
+        flowTarget: data.flowTarget || '',
+        flowActual: data.flowActual || '',
+        vipFlowTarget: data.vipFlowTarget || '',
+        vipFlowActual: data.vipFlowActual || '',
+        manageArea: data.manageArea || '',
+        areaEfficiency: data.areaEfficiency || '',
+        staffCount: data.staffCount || '',
+        laborEfficiency: data.laborEfficiency || '',
+        operator: data.operator || '',
+        operateTime: data.operateTime || nowText()
+      };
+    }
+
+    function createId() {
+      return `row-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function nowText() {
+      const now = new Date();
+      const pad = (num) => String(num).padStart(2, '0');
+      return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+
+    function compareDateByType(left, right, type) {
+      const length = type === '年' ? 4 : type === '月' ? 6 : 8;
+      const normalize = (value) => String(value).replace(/[^0-9]/g, '').padEnd(length, '0').slice(0, length);
+      return normalize(left).localeCompare(normalize(right));
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+    }
+  </script>
+</body>
+</html>

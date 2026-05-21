@@ -679,6 +679,7 @@
     .col-index { width: 46px; }
     .col-type { width: 70px; }
     .col-date { width: 88px; }
+    .col-channel { width: 120px; }
     .col-code { width: 78px; }
     .col-name { width: 170px; }
     .col-small { width: 86px; }
@@ -1091,15 +1092,29 @@
           <label for="endDate">至</label>
           <span class="date-wrap"><input id="endDate" class="filter-text date-input" type="text" placeholder="选择年月" readonly><button class="calendar-btn" type="button" data-picker="endDate" aria-label="选择结束日期"></button></span>
         </div>
-        <div class="filter-group">
-          <label for="storeTrigger">门店：</label>
-          <div class="multi-select" id="storeFilter">
-            <button class="multi-select-trigger" type="button" id="storeTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
-            <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
-              <label class="multi-option"><input type="checkbox" value="6826" checked>6826 广州新免免税品有限公司</label>
+          <div class="filter-group">
+            <label for="channelTrigger">渠道：</label>
+            <div class="multi-select" id="channelFilter">
+              <button class="multi-select-trigger" type="button" id="channelTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
+              <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+                <label class="multi-option"><input type="checkbox" value="海南区域" checked>海南区域</label>
+                <label class="multi-option"><input type="checkbox" value="出入境口岸" checked>出入境口岸</label>
+                <label class="multi-option"><input type="checkbox" value="海外零售" checked>海外零售</label>
+                <label class="multi-option"><input type="checkbox" value="中免商贸" checked>中免商贸</label>
+                <label class="multi-option"><input type="checkbox" value="市内店" checked>市内店</label>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div class="filter-group">
+            <label for="storeTrigger">门店：</label>
+            <div class="multi-select" id="storeFilter">
+              <button class="multi-select-trigger" type="button" id="storeTrigger" aria-haspopup="listbox" aria-expanded="false">全部</button>
+              <div class="multi-select-menu" role="listbox" aria-multiselectable="true">
+                <label class="multi-option"><input type="checkbox" value="6826" checked>6826 广州新免免税品有限公司</label>
+              </div>
+            </div>
+          </div>
         <div class="spacer-wide"></div>
         <div class="query-actions">
           <button class="btn btn-primary" type="button" id="queryBtn">查询</button>
@@ -1120,12 +1135,17 @@
               <th class="col-index" rowspan="2">序号</th>
               <th class="col-type" rowspan="2">日期类型</th>
               <th class="col-date" rowspan="2">日期</th>
+              <th class="col-channel" rowspan="2">渠道</th>
               <th class="col-code" rowspan="2">门店编码</th>
               <th class="col-name" rowspan="2">门店名称</th>
               <th colspan="2">营业收入（亿元）</th>
               <th colspan="2">线下收入（亿元）</th>
               <th colspan="2">客流人数（万人次）</th>
               <th colspan="2">离岛客流（万人次）</th>
+              <th class="col-manage-area" rowspan="2">经营面积（平方米）</th>
+              <th class="col-area-efficiency" rowspan="2">坪效（元/平方米）</th>
+              <th class="col-staff-count" rowspan="2">营业人员（人）</th>
+              <th class="col-labor-efficiency" rowspan="2">劳效（元/人）</th>
               <th class="col-operator" rowspan="2">操作人</th>
               <th class="col-time" rowspan="2">操作时间</th>
               <th class="col-op" rowspan="2">操作</th>
@@ -1182,6 +1202,17 @@
               <input id="formDate" name="date" type="text" placeholder="例如：2026-05" required>
             </div>
             <div class="form-item">
+              <label class="required" for="formChannel">渠道</label>
+              <select id="formChannel" name="channel">
+                <option value="">全部</option>
+                <option value="海南区域">海南区域</option>
+                <option value="出入境口岸">出入境口岸</option>
+                <option value="海外零售">海外零售</option>
+                <option value="中免商贸">中免商贸</option>
+                <option value="市内店">市内店</option>
+              </select>
+            </div>
+            <div class="form-item">
               <label class="required" for="formStoreCode">门店编码</label>
               <input id="formStoreCode" name="storeCode" type="text" required>
             </div>
@@ -1221,6 +1252,22 @@
               <label for="formVipFlowActual">离岛客流-实际完成</label>
               <input id="formVipFlowActual" name="vipFlowActual" type="text">
             </div>
+            <div class="form-item">
+              <label for="formManageArea">经营面积（平方米）</label>
+              <input id="formManageArea" name="manageArea" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formAreaEfficiency">坪效（元/平方米）</label>
+              <input id="formAreaEfficiency" name="areaEfficiency" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formStaffCount">营业人员（人）</label>
+              <input id="formStaffCount" name="staffCount" type="text">
+            </div>
+            <div class="form-item">
+              <label for="formLaborEfficiency">劳效（元/人）</label>
+              <input id="formLaborEfficiency" name="laborEfficiency" type="text">
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -1255,12 +1302,21 @@
                 <tr>
                   <th>日期类型</th>
                   <th>日期</th>
+                  <th>渠道</th>
                   <th>门店编码</th>
                   <th>门店名称</th>
                   <th>营业收入-目标</th>
                   <th>营业收入-实际</th>
                   <th>线下收入-目标</th>
                   <th>线下收入-实际</th>
+                  <th>客流人数-目标</th>
+                  <th>客流人数-实际</th>
+                  <th>离岛客流-目标</th>
+                  <th>离岛客流-实际</th>
+                  <th>经营面积（平方米）</th>
+                  <th>坪效（元/平方米）</th>
+                  <th>营业人员（人）</th>
+                  <th>劳效（元/人）</th>
                 </tr>
               </thead>
               <tbody id="importPreviewBody"></tbody>
@@ -1298,6 +1354,7 @@
         id: 'row-1',
         dateType: '年',
         date: '2026',
+        channel: '出入境口岸',
         storeCode: '6826',
         storeName: '广州新免免税品有限公司',
         revenueTarget: '',
@@ -1308,6 +1365,10 @@
         flowActual: 'xxxx.xx',
         vipFlowTarget: 'xxxx.xx',
         vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
         operator: 'wangkeke',
         operateTime: '2023-02-13 19:02:00'
       },
@@ -1315,6 +1376,7 @@
         id: 'row-2',
         dateType: '月',
         date: '2026-05',
+        channel: '出入境口岸',
         storeCode: '6826',
         storeName: '广州新免免税品有限公司',
         revenueTarget: '14,575.25',
@@ -1325,6 +1387,10 @@
         flowActual: 'xxxx.xx',
         vipFlowTarget: 'xxxx.xx',
         vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
         operator: 'wangkeke',
         operateTime: '2023-02-13 19:02:00'
       },
@@ -1332,6 +1398,7 @@
         id: 'row-3',
         dateType: '月',
         date: '2026-05',
+        channel: '出入境口岸',
         storeCode: '6826',
         storeName: '广州新免免税品有限公司',
         revenueTarget: '14,575.25',
@@ -1342,12 +1409,26 @@
         flowActual: 'xxxx.xx',
         vipFlowTarget: 'xxxx.xx',
         vipFlowActual: 'xxxx.xx',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
         operator: 'wangkeke',
         operateTime: '2023-02-13 19:02:00'
       }
     ];
 
     let rows = loadRows();
+    // 批量补全缺失的 channel 字段为默认值（出入境口岸）
+    (function fillMissingChannelsDefault() {
+      const defaultChannel = '出入境口岸';
+      let changed = false;
+      rows = rows.map((r) => {
+        if (!r.channel) { changed = true; return { ...r, channel: defaultChannel }; }
+        return r;
+      });
+      if (changed) saveRows();
+    })();
     let visibleRows = [...rows];
     let selectedIds = new Set();
     let editingId = null;
@@ -1380,6 +1461,7 @@
 
     updateDateInputMode();
     updateStoreTriggerText();
+    updateChannelTriggerText();
     renderTable();
 
     document.getElementById('queryBtn').addEventListener('click', handleQuery);
@@ -1396,6 +1478,10 @@
     document.getElementById('calendarToday').addEventListener('click', selectToday);
     dateType.addEventListener('change', handleDateTypeChange);
     storeTrigger.addEventListener('click', toggleStoreFilter);
+    const channelFilter = document.getElementById('channelFilter');
+    const channelTrigger = document.getElementById('channelTrigger');
+    channelTrigger.addEventListener('click', toggleChannelFilter);
+    channelFilter.addEventListener('change', updateChannelTriggerText);
     storeFilter.addEventListener('change', updateStoreTriggerText);
     document.addEventListener('click', closeFloatingControlsOnOutsideClick);
     document.getElementById('addBtn').addEventListener('click', () => openModal());
@@ -1435,6 +1521,12 @@
       event.preventDefault();
       const formData = new FormData(recordForm);
       const data = Object.fromEntries(formData.entries());
+
+      if (!data.channel) {
+        showToast('请填写渠道');
+        return;
+      }
+
       const record = normalizeRecord(data);
 
       if (editingId) {
@@ -1527,7 +1619,7 @@
 
     function renderTable() {
       if (!visibleRows.length) {
-        tableBody.innerHTML = '<tr class="empty-row"><td colspan="16">暂无数据</td></tr>';
+        tableBody.innerHTML = '<tr class="empty-row"><td colspan="21">暂无数据</td></tr>';
         return;
       }
 
@@ -1540,6 +1632,7 @@
             <td>${index + 1}</td>
             ${renderCell(row, 'dateType', isEditing, 'select')}
             ${renderCell(row, 'date', isEditing)}
+            ${renderCell(row, 'channel', isEditing)}
             ${renderCell(row, 'storeCode', isEditing)}
             ${renderCell(row, 'storeName', isEditing, 'text', 'td-name')}
             ${renderCell(row, 'revenueTarget', isEditing)}
@@ -1550,6 +1643,10 @@
             ${renderCell(row, 'flowActual', isEditing)}
             ${renderCell(row, 'vipFlowTarget', isEditing)}
             ${renderCell(row, 'vipFlowActual', isEditing)}
+            ${renderCell(row, 'manageArea', isEditing)}
+            ${renderCell(row, 'areaEfficiency', isEditing)}
+            ${renderCell(row, 'staffCount', isEditing)}
+            ${renderCell(row, 'laborEfficiency', isEditing)}
             ${renderCell(row, 'operator', isEditing)}
             ${renderCell(row, 'operateTime', isEditing)}
             <td>
@@ -1619,8 +1716,13 @@
       storeFilter.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
         checkbox.checked = true;
       });
+      const channelFilterEl = document.getElementById('channelFilter');
+      channelFilterEl.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = true;
+      });
       updateDateInputMode();
       updateStoreTriggerText();
+      updateChannelTriggerText();
       selectedIds.clear();
       inlineEditingId = null;
       visibleRows = [...rows];
@@ -1633,13 +1735,15 @@
       const end = endDate.value.trim();
       const type = dateType.value;
       const selectedStores = getSelectedStores();
+      const selectedChannels = getSelectedChannels();
 
       visibleRows = rows.filter((row) => {
         const typeMatch = !type || row.dateType === type;
         const storeMatch = !selectedStores.length || selectedStores.includes(row.storeCode);
+        const channelMatch = !selectedChannels.length || selectedChannels.includes(row.channel);
         const startMatch = !start || compareDateByType(row.date, start, type) >= 0;
         const endMatch = !end || compareDateByType(row.date, end, type) <= 0;
-        return typeMatch && storeMatch && startMatch && endMatch;
+        return typeMatch && storeMatch && channelMatch && startMatch && endMatch;
       });
 
       renderTable();
@@ -1745,10 +1849,25 @@
       storeTrigger.setAttribute('aria-expanded', String(isOpen));
     }
 
+    function toggleChannelFilter(event) {
+      event.stopPropagation();
+      closeCalendar();
+      const channelFilterEl = document.getElementById('channelFilter');
+      const isOpen = channelFilterEl.classList.toggle('open');
+      document.getElementById('channelTrigger').setAttribute('aria-expanded', String(isOpen));
+    }
+
     function closeFloatingControlsOnOutsideClick(event) {
       if (!storeFilter.contains(event.target)) {
         storeFilter.classList.remove('open');
         storeTrigger.setAttribute('aria-expanded', 'false');
+      }
+
+      const channelFilterEl = document.getElementById('channelFilter');
+      if (channelFilterEl && !channelFilterEl.contains(event.target)) {
+        channelFilterEl.classList.remove('open');
+        const ch = document.getElementById('channelTrigger');
+        if (ch) ch.setAttribute('aria-expanded', 'false');
       }
 
       if (!calendarPopover.contains(event.target) && !event.target.closest('.date-wrap')) {
@@ -1758,6 +1877,11 @@
 
     function getSelectedStores() {
       return Array.from(storeFilter.querySelectorAll('input[type="checkbox"]:checked')).map((checkbox) => checkbox.value);
+    }
+
+    function getSelectedChannels() {
+      const channelFilterEl = document.getElementById('channelFilter');
+      return Array.from(channelFilterEl.querySelectorAll('input[type="checkbox"]:checked')).map((checkbox) => checkbox.value);
     }
 
     function updateStoreTriggerText() {
@@ -1770,6 +1894,22 @@
       }
 
       storeTrigger.textContent = checked.length === 1
+        ? checked[0].parentElement.textContent.trim()
+        : `已选 ${checked.length} 项`;
+    }
+
+    function updateChannelTriggerText() {
+      const channelFilterEl = document.getElementById('channelFilter');
+      const checked = Array.from(channelFilterEl.querySelectorAll('input[type="checkbox"]:checked'));
+      const total = channelFilterEl.querySelectorAll('input[type="checkbox"]').length;
+
+      const channelTriggerEl = document.getElementById('channelTrigger');
+      if (!checked.length || checked.length === total) {
+        channelTriggerEl.textContent = '全部';
+        return;
+      }
+
+      channelTriggerEl.textContent = checked.length === 1
         ? checked[0].parentElement.textContent.trim()
         : `已选 ${checked.length} 项`;
     }
@@ -1858,12 +1998,21 @@
         <tr>
           <td>${escapeHtml(row.dateType)}</td>
           <td>${escapeHtml(row.date)}</td>
+          <td>${escapeHtml(row.channel)}</td>
           <td>${escapeHtml(row.storeCode)}</td>
           <td>${escapeHtml(row.storeName)}</td>
           <td>${escapeHtml(row.revenueTarget)}</td>
           <td>${escapeHtml(row.revenueActual)}</td>
           <td>${escapeHtml(row.offlineTarget)}</td>
           <td>${escapeHtml(row.offlineActual)}</td>
+          <td>${escapeHtml(row.flowTarget)}</td>
+          <td>${escapeHtml(row.flowActual)}</td>
+          <td>${escapeHtml(row.vipFlowTarget)}</td>
+          <td>${escapeHtml(row.vipFlowActual)}</td>
+          <td>${escapeHtml(row.manageArea)}</td>
+          <td>${escapeHtml(row.areaEfficiency)}</td>
+          <td>${escapeHtml(row.staffCount)}</td>
+          <td>${escapeHtml(row.laborEfficiency)}</td>
         </tr>
       `).join('');
     }
@@ -1873,6 +2022,7 @@
         id: createId(),
         dateType: '月',
         date: '2026-05',
+        channel: '海南区域',
         storeCode: '6826',
         storeName: '广州新免免税品有限公司',
         revenueTarget: '14,575.25',
@@ -1883,6 +2033,10 @@
         flowActual: 'xxxx.xx',
         vipFlowTarget: 'xxxx.xx',
         vipFlowActual: 'xxxx.xx',
+        manageArea: 'xxxx.xx',
+        areaEfficiency: 'xxxx.xx',
+        staffCount: 'xxxx.xx',
+        laborEfficiency: 'xxxx.xx',
         operator: 'wangkeke',
         operateTime: nowText(),
         sourceFile: fileName
@@ -1890,8 +2044,8 @@
     }
 
     function downloadTemplate() {
-      const headers = ['日期类型','日期','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','操作人','操作时间'];
-      const sample = ['月','2026-05','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()];
+      const headers = ['日期类型','日期','渠道','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','经营面积（平方米）','坪效（元/平方米）','营业人员（人）','劳效（元/人）','操作人','操作时间'];
+      const sample = ['月','2026-05','海南区域','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()];
       const table = `
         <html><head><meta charset="utf-8"></head><body>
           <table>
@@ -1931,6 +2085,7 @@
       const values = record || {
         dateType: '',
         date: '',
+        channel: '',
         storeCode: '',
         storeName: '',
         revenueTarget: '',
@@ -1976,6 +2131,7 @@
       return {
         dateType: data.dateType || '月',
         date: data.date || '',
+        channel: data.channel || '',
         storeCode: data.storeCode || '',
         storeName: data.storeName || '',
         revenueTarget: data.revenueTarget || '',
@@ -1986,6 +2142,10 @@
         flowActual: data.flowActual || '',
         vipFlowTarget: data.vipFlowTarget || '',
         vipFlowActual: data.vipFlowActual || '',
+        manageArea: data.manageArea || '',
+        areaEfficiency: data.areaEfficiency || '',
+        staffCount: data.staffCount || '',
+        laborEfficiency: data.laborEfficiency || '',
         operator: data.operator || '',
         operateTime: data.operateTime || nowText()
       };
