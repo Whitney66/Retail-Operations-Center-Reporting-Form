@@ -628,15 +628,22 @@
 
     table {
       width: 100%;
-      min-width: 1340px;
+      min-width: 2280px;
       border-collapse: collapse;
       table-layout: fixed;
       color: #646f80;
       font-size: 12px;
     }
 
+    thead th {
+      line-height: 16px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
     thead tr:first-child th {
-      height: 30px;
+      height: 40px;
       background: var(--header);
       color: #263142;
       font-weight: 700;
@@ -645,7 +652,7 @@
     }
 
     thead tr:nth-child(2) th {
-      height: 30px;
+      height: 32px;
       background: #fff;
       color: #263142;
       font-weight: 700;
@@ -678,16 +685,20 @@
       box-shadow: inset 3px 0 0 var(--primary-light);
     }
 
-    .col-index { width: 46px; }
-    .col-type { width: 70px; }
-    .col-date { width: 88px; }
-    .col-channel { width: 120px; }
-    .col-code { width: 78px; }
-    .col-name { width: 170px; }
-    .col-small { width: 86px; }
-    .col-operator { width: 82px; }
-    .col-time { width: 142px; }
-    .col-op { width: 78px; }
+    .col-index { width: 54px; }
+    .col-type { width: 82px; }
+    .col-date { width: 104px; }
+    .col-channel { width: 136px; }
+    .col-code { width: 92px; }
+    .col-name { width: 210px; }
+    .col-small { width: 98px; }
+    .col-manage-area { width: 130px; }
+    .col-area-efficiency { width: 132px; }
+    .col-staff-count { width: 112px; }
+    .col-labor-efficiency { width: 110px; }
+    .col-operator { width: 90px; }
+    .col-time { width: 154px; }
+    .col-op { width: 88px; }
 
     .td-name {
       text-align: left;
@@ -851,7 +862,7 @@
     }
 
     .import-modal {
-      width: 760px;
+      width: 960px;
     }
 
     .upload-panel {
@@ -955,7 +966,7 @@
     }
 
     .preview-table {
-      min-width: 920px;
+      min-width: 1600px;
       font-size: 12px;
     }
 
@@ -1349,7 +1360,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = 'retail_profit_statement_rows_v1';
+    const STORAGE_KEY = 'retail_profit_statement_rows_v2';
 
     const seedRows = [
       {
@@ -1421,16 +1432,7 @@
     ];
 
     let rows = loadRows();
-    // 批量补全缺失的 channel 字段为默认值（出入境口岸）
-    (function fillMissingChannelsDefault() {
-      const defaultChannel = '出入境口岸';
-      let changed = false;
-      rows = rows.map((r) => {
-        if (!r.channel) { changed = true; return { ...r, channel: defaultChannel }; }
-        return r;
-      });
-      if (changed) saveRows();
-    })();
+    normalizeSavedRows();
     let visibleRows = [...rows];
     let selectedIds = new Set();
     let editingId = null;
@@ -1608,11 +1610,29 @@
 
     function loadRows() {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('retail_profit_statement_rows_v1');
         return saved ? JSON.parse(saved) : seedRows.map((item) => ({ ...item }));
       } catch (error) {
         return seedRows.map((item) => ({ ...item }));
       }
+    }
+
+    function normalizeSavedRows() {
+      let changed = false;
+      rows = rows.map((row, index) => {
+        const seed = seedRows[index % seedRows.length];
+        const normalized = {
+          ...row,
+          channel: row.channel || seed.channel,
+          manageArea: row.manageArea || seed.manageArea,
+          areaEfficiency: row.areaEfficiency || seed.areaEfficiency,
+          staffCount: row.staffCount || seed.staffCount,
+          laborEfficiency: row.laborEfficiency || seed.laborEfficiency
+        };
+        if (normalized.channel !== row.channel || normalized.manageArea !== row.manageArea || normalized.areaEfficiency !== row.areaEfficiency || normalized.staffCount !== row.staffCount || normalized.laborEfficiency !== row.laborEfficiency) changed = true;
+        return normalized;
+      });
+      if (changed) saveRows();
     }
 
     function saveRows() {
@@ -2028,17 +2048,17 @@
         storeCode: '6826',
         storeName: '广州新免免税品有限公司',
         revenueTarget: '14,575.25',
-        revenueActual: 'xxxx.xx',
-        offlineTarget: '9865.11',
-        offlineActual: 'xxxx.xx',
-        flowTarget: 'xxxx.xx',
-        flowActual: 'xxxx.xx',
-        vipFlowTarget: 'xxxx.xx',
-        vipFlowActual: 'xxxx.xx',
-        manageArea: 'xxxx.xx',
-        areaEfficiency: 'xxxx.xx',
-        staffCount: 'xxxx.xx',
-        laborEfficiency: 'xxxx.xx',
+        revenueActual: '13,982.40',
+        offlineTarget: '9,865.11',
+        offlineActual: '9,208.36',
+        flowTarget: '128.50',
+        flowActual: '119.80',
+        vipFlowTarget: '82.30',
+        vipFlowActual: '79.60',
+        manageArea: '5,200',
+        areaEfficiency: '11.4',
+        staffCount: '58',
+        laborEfficiency: '2.7',
         operator: 'wangkeke',
         operateTime: nowText(),
         sourceFile: fileName
@@ -2047,7 +2067,7 @@
 
     function downloadTemplate() {
       const headers = ['日期类型','日期','渠道','门店编码','门店名称','营业收入-目标数据','营业收入-实际完成','线下收入-目标数据','线下收入-实际完成','客流人数-目标数据','客流人数-实际完成','离岛客流-目标数据','离岛客流-实际完成','经营面积（平方米）','坪效（元/平方米）','营业人员（人）','劳效（元/人）','操作人','操作时间'];
-      const sample = ['月','2026-05','海南区域','6826','广州新免免税品有限公司','','xxxx.xx','9865.11','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','xxxx.xx','wangkeke',nowText()];
+      const sample = ['月','2026-05','海南区域','6826','广州新免免税品有限公司','14,575.25','13,982.40','9,865.11','9,208.36','128.50','119.80','82.30','79.60','5,200','11.4','58','2.7','wangkeke',nowText()];
       const table = `
         <html><head><meta charset="utf-8"></head><body>
           <table>
@@ -2098,6 +2118,10 @@
         flowActual: '',
         vipFlowTarget: '',
         vipFlowActual: '',
+        manageArea: '',
+        areaEfficiency: '',
+        staffCount: '',
+        laborEfficiency: '',
         operator: '',
         operateTime: ''
       };
